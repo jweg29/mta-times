@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Head from 'next/head';
 import Link from "next/link";
 import { Suspense } from "react";
-import Dashboard from './ui/Dashboard';
+//import Dashboard from './ui/Dashboard';
 import StopSelection from './ui/StopSelection';
 import UpcomingDepartures from './ui/UpcomingDepartures';
 
