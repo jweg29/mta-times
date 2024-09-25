@@ -5,5 +5,10 @@
     "@mantine/form": "^7.13.0",
     "@mantine/hooks": "^7.13.0",
     "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.47",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1"
   }
 }

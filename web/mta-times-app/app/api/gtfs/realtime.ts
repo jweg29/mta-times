@@ -1,8 +1,5 @@
-// pages/api/realtime.ts
-
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getAllStops } from '../../../lib/gtfs';
-import { getRealtimeTripUpdates } from '../../../lib/realtime';
+import { getRealtimeTripUpdates } from '../../lib/realtime';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
