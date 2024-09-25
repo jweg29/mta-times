@@ -2,7 +2,7 @@
 
 Project for providing real-time MTA train time updates using MTA's published GTFS feeds: https://new.mta.info/developers.
 
-## Web running instructions
+## Web setup instructions
 
 from the repo root directory:
 ```
