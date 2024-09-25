@@ -1,13 +1,13 @@
-// utils/gtfs.ts
-
+import { parse } from 'csv-parse/sync';
 import fs from 'fs';
 import path from 'path';
-import { parse } from 'csv-parse/sync';
+import { parseCSV } from './utils';
 
-export const getAllStops = (): Stop[] => {
-  //console.log(`getAllStops`);
-  const stopsPath = path.join(process.cwd(), 'public', 'gtfs', 'stop_times.txt');
+export const fetchAllStops = async (): Promise<Stop[]> => {
+  const stopsPath = path.join(process.cwd(), 'app', 'lib', 'gtfs', 'stops.txt');
+
   const stops: Stop[] = parseCSV(stopsPath);
+  console.log(stops);
   return stops;
 };
 
@@ -31,34 +31,3 @@ export const getStopById = (stopId: string): Stop | undefined => {
   const stops: Stop[] = parseCSV(stopsPath);
   return stops.find(stop => stop.stop_id === stopId);
 };
-
-// Interfaces
-
-interface Stop {
-  stop_id: string;
-  stop_name: string;
-  stop_lat: string;
-  stop_lon: string;
-  location_type: string;
-  parent_station: string;
-  [key: string]: string; // to handle any other fields
-}
-
-interface StopTime {
-  trip_id: string;
-  stop_id: string;
-  arrival_time: string;
-  departure_time: string;
-  stop_sequence: string;
-  [key: string]: string | number;
-}
-
-interface Trip {
-  route_id: string;
-  trip_id: string;
-  service_id: string;
-  trip_headsign: string;
-  direction_id: string;
-  shape_id: string;
-  [key: string]: string;
-}

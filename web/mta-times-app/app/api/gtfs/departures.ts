@@ -1,8 +1,8 @@
 // pages/api/departures.ts
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getStopTimesByStopId, getTripsByTripIds, getStopById } from '../../../lib/gtfs';
-import { getRealtimeTripUpdates, TripUpdate } from '../../../lib/realtime';
+import { getStopTimesByStopId, getTripsByTripIds, getStopById } from '../../lib/gtfs';
+import { getRealtimeTripUpdates, TripUpdate } from '../../lib/realtime';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { stopId } = req.query;
