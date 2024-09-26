@@ -2,6 +2,9 @@ import { parse } from 'csv-parse/sync';
 import fs from 'fs';
 import path from 'path';
 import { parseCSV } from './utils';
+import { Stop } from './definitions';
+import { StopTime } from './definitions';
+import { Trip } from './definitions';
 
 export const fetchAllStops = async (): Promise<Stop[]> => {
   const stopsPath = path.join(process.cwd(), 'app', 'lib', 'gtfs', 'stops.txt');

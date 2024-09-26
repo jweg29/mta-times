@@ -4,11 +4,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 const GtfsRealtimeBindings = require('gtfs-realtime-bindings').transit_realtime;
 const { FeedMessage, FeedHeader, FeedEntity, VehiclePosition } = GtfsRealtimeBindings;
+import { Trip } from '../lib/definitions'
 
+/*
 export interface TripUpdate {
   trip: Trip;
   [key: string]: string;
 }
+*/
 
 export const getRealtimeTripUpdates = async () => {
   const gtfsRealtimeUrl = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l';
