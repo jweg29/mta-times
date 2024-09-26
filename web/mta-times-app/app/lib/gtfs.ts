@@ -10,7 +10,6 @@ export const fetchAllStops = async (): Promise<Stop[]> => {
   const stopsPath = path.join(process.cwd(), 'app', 'lib', 'gtfs', 'stops.txt');
 
   const stops: Stop[] = parseCSV(stopsPath);
-  console.log(stops);
   return stops;
 };
 

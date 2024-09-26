@@ -1,37 +1,34 @@
-import { MantineProvider, Select } from '@mantine/core';
-import type { Metadata } from 'next';
-import Head from 'next/head';
-import Link from "next/link";
-import { Suspense } from "react";
-//import Dashboard from './ui/Dashboard';
-import StopSelection from './ui/StopSelection';
+import { MantineProvider, Space } from '@mantine/core';
+import { Suspense } from 'react';
+import StopSelection from './StopSelection/page';
+import { StopSelectionProvider } from './StopSelectionContext';
+import StopCard from './ui/StopCard';
 import UpcomingDepartures from './ui/UpcomingDepartures';
 
-//import useSwr from "swr";
-//import type { NextApiRequest, NextApiResponse } from 'next';
-//import fetch from 'node-fetch';
-//import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
-//const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-export const metadata: Metadata = {
-    title: 'MTA Times 🚂',
-}
-
 export default function Page() {
-    "/api/departures?stopId=STOP_ID"
-    //const { data, error, isLoading } = useSwr<User[]>("/api/departures?stopId=L10", fetcher);
-    //const { data, error, isLoading } = useSwr<User[]>("/api/users", fetcher);
-    //if (error) return <div>Failed to load departures</div>;
-    //if (isLoading) return <div>Loading...</div>;
-    //if (!data) return null;
+    const containerStyle: React.CSSProperties = {
+        padding: '20px',
+        maxWidth: '600px',
+        margin: '0 auto', // Center the container horizontally
+        textAlign: 'center', // Center text inside the container
+    };
 
     return (
         <MantineProvider>
-            <h1>MTA API 🚂</h1>
-            <Suspense fallback={<p>Loading...</p>}>
-                <StopSelection />
-            </Suspense>
-            <UpcomingDepartures stop={undefined} />
+            <div style={containerStyle}>
+                <h1>MTA Times 🚂</h1>
+
+                <StopSelectionProvider> {/* Wrap with provider to share state */}
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <StopSelection />
+                    </Suspense>
+
+                    <Space h="md" />
+                    <StopCard />
+                    <Space h="md" />
+                    <UpcomingDepartures stop={undefined} />
+                </StopSelectionProvider>
+            </div>
         </MantineProvider>
     );
 }

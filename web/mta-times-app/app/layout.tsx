@@ -11,12 +11,13 @@ export default function RootLayout({
         <html lang="en">
             <body>{children}</body>
         </html>
+
     )
 }
 
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Home',
-    description: 'Welcome to Next.js',
+    title: 'MTA Times 🚂',
+    description: 'Welcome to MTA Times 🚂',
 }
