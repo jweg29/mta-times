@@ -8,7 +8,6 @@ type Props = {
     stops: Stop[],
 };
 
-// Define the functional component with React.FC<StopSelectionProps>
 const InteractiveStopSelection: React.FC<Props> = ({ stops }) => {
     const { setSelectedStop } = useStopSelection(); // Get setSelectedStop from context
 

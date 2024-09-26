@@ -1,6 +1,6 @@
 import { MantineProvider, Space } from '@mantine/core';
 import { Suspense } from 'react';
-import StopSelection from './StopSelection/page';
+import StopSelection from './StopSelection';
 import { StopSelectionProvider } from './StopSelectionContext';
 import StopCard from './ui/StopCard';
 import UpcomingDepartures from './ui/UpcomingDepartures';

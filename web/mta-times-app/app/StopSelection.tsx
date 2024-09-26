@@ -1,6 +1,6 @@
-import { Stop } from "../lib/definitions";
-import { fetchAllStops } from "../lib/gtfs";
-import InteractiveStopSelection from '../ui/InteractiveStopSelection';
+import { Stop } from "./lib/definitions";
+import { fetchAllStops } from "./lib/gtfs";
+import InteractiveStopSelection from './ui/InteractiveStopSelection';
 
 type StopSelectionProps = {
     selectedStop: Stop | null;
