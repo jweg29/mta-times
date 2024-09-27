@@ -8,5 +8,5 @@ https://mta-times.vercel.app/
 
 from the repo root directory:
 ```
-cd web/api-routes-rest-app && pnpm run dev
+cd web/mta-times-app && pnpm run dev
 ```
