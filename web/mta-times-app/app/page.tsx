@@ -26,7 +26,11 @@ export default function Page() {
                     <Space h="md" />
                     <StopCard />
                     <Space h="md" />
-                    <UpcomingDepartures stop={undefined} />
+
+                    {/* <Suspense fallback={<p>Loading...</p>}> */}
+                    <UpcomingDepartures />
+                    {/* </Suspense> */}
+
                 </StopSelectionProvider>
             </div>
         </MantineProvider>

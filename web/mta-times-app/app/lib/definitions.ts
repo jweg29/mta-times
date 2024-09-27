@@ -1,8 +1,3 @@
-export type User = {
-  id: number;
-  name?: string;
-};
-
 export interface Stop {
   stop_id: string;
   stop_name: string;
@@ -31,3 +26,15 @@ export interface Trip {
   shape_id: string;
   [key: string]: string;
 }
+
+export interface Departure {
+  trip_id: string;
+  route_id?: string;
+  departure_time: Date;
+  isRealtime: boolean;
+}
+
+/*export interface TripUpdate {
+  trip: Trip;
+  [key: string]: string;
+}*/

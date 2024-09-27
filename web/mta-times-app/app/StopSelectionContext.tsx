@@ -25,7 +25,6 @@ export const StopSelectionProvider: React.FC<{ children: ReactNode }> = ({ child
 
 // Custom hook to use the StopSelection context
 export const useStopSelection = () => {
-    console.log(`useStopSelection called`)
     const context = useContext(StopSelectionContext);
     if (context === undefined) {
         throw new Error('useStopSelection must be used within a StopSelectionProvider');

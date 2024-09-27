@@ -15,7 +15,7 @@ const StopCard: React.FC = () => {
                     <Text size="md">Latitude: {selectedStop.stop_lat} Longitude: {selectedStop.stop_lon}</Text>
                 </Card>
             </>
-            : <p>Stop is null ⚠️</p>
+            : <></>
     );
 }
 
