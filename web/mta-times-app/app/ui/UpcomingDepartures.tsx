@@ -25,9 +25,9 @@ const UpcomingDepartures: React.FC = () => {
                 throw new Error('Failed to fetch departures');
             }
 
-            const departures: Departure[] = departuresResponse.json();
-            console.log(departures);
-            setDepartures(departures);
+            //const departures: Departure[] = departuresResponse.json();
+            //console.log(departures);
+            //setDepartures(departures);
         };
 
         fetchData();
