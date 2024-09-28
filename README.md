@@ -1,8 +1,11 @@
 # MTA Times 
 
+https://mta-times.vercel.app/
+
+---
+
 Project for providing real-time MTA train time updates using MTA's published GTFS feeds: https://new.mta.info/developers.
 
-https://mta-times.vercel.app/
 
 ## Web setup instructions
 
