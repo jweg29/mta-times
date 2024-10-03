@@ -1,10 +1,9 @@
-// pages/api/realtime.ts
-
 import fetch from 'node-fetch';
+import { RealtimeTrip } from './definitions';
 const GtfsRealtimeBindings = require('gtfs-realtime-bindings').transit_realtime;
-const { FeedMessage, FeedHeader, FeedEntity, VehiclePosition } = GtfsRealtimeBindings;
+const { FeedMessage, FeedHeader, FeedEntity, Alert, Vehicle, VehiclePosition } = GtfsRealtimeBindings;
 
-export const getRealtimeTripUpdates = async () => {
+export const getRealtimeTripUpdates = async (): Promise<RealtimeTrip[]> => {
   const gtfsRealtimeUrl = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l';
   /*
   https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace

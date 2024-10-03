@@ -1,48 +1,61 @@
 'use client'
 
 import { Departure } from "lib/definitions";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useStopSelection } from "../StopSelectionContext";
+import DepartureTimeCard from "./DepartureTimeCard/DepartureTimeCard";
 
 const UpcomingDepartures: React.FC = () => {
-    //const router = useRouter();
-    //const { stopId } = router.query;
     const [departures, setDepartures] = useState<Departure[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
     const { selectedStop } = useStopSelection(); // Get selectedStop from context
 
     useEffect(() => {
         const fetchData = async () => {
-            // TODO: fetch departures for stop
-            console.log(`UpcomingDepartures useEffect called`)
+            if (selectedStop == null) {
+                console.log(`No stop selected`);
+                return;
+            }
 
             const departuresResponse = await fetch(`api/departures?stopId=${selectedStop.stop_id}`)
 
             if (!departuresResponse.ok) {
                 console.log(`Failed to fetch departures`);
-                throw new Error('Failed to fetch departures');
+                //throw new Error('Failed to fetch departures');
             }
 
-            //const departures: Departure[] = departuresResponse.json();
-            //console.log(departures);
-            //setDepartures(departures);
+            // Parse the JSON response
+            const data = await departuresResponse.json();
+
+            // Ensure that the data is an array
+            if (!Array.isArray(data)) {
+                throw new Error('Expected an array of departures');
+            }
+            setDepartures(data as Departure[]);
         };
 
         fetchData();
-    }, [selectedStop]); // Empty dependency array means this effect runs once when the component mounts
 
-    //const stopTimes = await getStopTimesByStopId(selectedStop.stop_id);
-    //console.log(stopTimes);
+        const intervalId = setInterval(fetchData, 30000);//60000); // 60000 milliseconds = 1 minute
+        return () => clearInterval(intervalId); // Cleanup on unmount
+
+    }, [selectedStop]); // Set the dependency array to selectedStop so it will update when the value changes i think?
 
     if (selectedStop == null) {
         return <h2>Upcoming Departures 🕰️</h2>
-    } else if (departures == null || departures.length == 0) {
+    } else if (departures == null) {
         return (
             <>
                 <h2>Upcoming Departures 🕰️</h2>
-                <p>Unable to fetch departures for {selectedStop.stop_name}</p>
+                <p>Loading departures for {selectedStop.stop_name}...⏳</p>
+            </>
+        )
+    } else if (departures.length == 0) {
+        return (
+            <>
+                <h2>Upcoming Departures 🕰️</h2>
+                <p>No departures found for {selectedStop.stop_name} 😢</p>
             </>
         )
     } else {
@@ -51,7 +64,7 @@ const UpcomingDepartures: React.FC = () => {
                 <h2>Upcoming Departures 🕰️</h2>
                 {
                     departures.map((departure) => (
-                        <p>{departure.trip_id}</p>
+                        <DepartureTimeCard departure={departure} />
                     ))
                 }
             </>

@@ -1,18 +1,15 @@
-import { Departure } from 'lib/definitions';
+import { Departure, Trip } from 'lib/definitions';
+import { getRealtimeTripUpdates } from 'lib/realtime';
 import { NextRequest, NextResponse } from 'next/server';
-import { getStopById, getStopTimesByStopId, getTripsByTripIds } from '../../lib/gtfs';
-import { getRealtimeTripUpdates } from '../../lib/realtime';
+import { getStopById, getTripsByTripIds } from '../../lib/gtfs';
 
 export async function GET(request: NextRequest) {
-    console.log(`api/departures`)
     const stopId = request.nextUrl.searchParams.get("stopId");
 
     if (typeof stopId !== 'string') {
         return NextResponse.json(
             { error: 'Invalid stop ID' },
-            {
-                status: 400,
-            }
+            { status: 400 }
         );
     }
 
@@ -20,74 +17,137 @@ export async function GET(request: NextRequest) {
     if (!stop) {
         return NextResponse.json(
             { error: 'Stop not found' },
-            {
-                status: 404,
-            }
+            { status: 404 }
         );
     }
 
     /*
     To retrieve departues we need to:
-    1. Get the stop times for the stop from the static stop_times.txt file.
-    2. Get the trips for those stop times from the static trips.txt file.
-    3. Get the realtime updates for those trips from the realtime feed. 
-    */
-    const staticStopTimes = getStopTimesByStopId(stopId);
-    const tripIds = staticStopTimes.map(stopTime => stopTime.trip_id);
-    const trips = getTripsByTripIds(tripIds);
-
-    const realtimeUpdates = await getRealtimeTripUpdates();
-    const realtimeTripIds = realtimeUpdates.map(update => update.tripUpdate?.trip?.tripId);
-    //console.log(`realtimeTripIds:\n ${realtimeTripIds}`)
-
-    /*
-    - Go through each trip update
-    - Find the update with my stop
-    - Store each time
-    - Sort by upcoming
-    - Seperate by direction
+    1. Fetch realtime updates from getRealtimeTripUpdates().
+    2. Get tripIds from each trip update and fetch the trip details.
+    3. Filter out trips that do not server the current stop.
+    4. Sort and filter out the remaining departure time?
     */
 
-    // Debugging purposes: Let's filter for trips that only have realtime updates.
-    const stopTimesWithRealttimeUpdates = staticStopTimes.filter(stopTime => realtimeTripIds.includes(stopTime.trip_id));
+    const realtimeTripUpdates = await getRealtimeTripUpdates()
 
-    if (stopTimesWithRealttimeUpdates.length === 0) {
-        return NextResponse.json(
-            { error: 'No realtime updates found for any trips at this stop' },
-            {
-                status: 404,
-            }
-        );
-    }
+    // fetch all the trips associated with these updates and form a dictionary.
+    const tripMap: Map<string, Trip> = new Map();
+    const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
+    const gtfsTrips = getTripsByTripIds(realtimeTripIds);
 
-    const departures: Departure[] = stopTimesWithRealttimeUpdates
-        .map(stopTime => {
-            // Was this trip included in the real time feed response?
-            const isRealtime = realtimeTripIds.includes(stopTime.trip_id);
-            if (!isRealtime) {
-                console.log(`No realtime update for trip ${stopTime.trip_id}`);
-            }
+    realtimeTripUpdates.forEach(realtimeTrip => {
+        const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip.trip_id.includes(realtimeTrip.tripUpdate.trip.tripId));
 
-            const realtimeUpdate = realtimeUpdates.find(update => update.tripUpdate?.trip?.tripId === stopTime.trip_id);
-
-            if (realtimeUpdate === undefined) {
-                console.log(`No realtime update for trip ${stopTime.trip_id}`);
-            }
-
-            const departureTime = isRealtime
-                ? new Date(realtimeUpdate!.tripUpdate!.stopTimeUpdate!.find(update => update.stopId === stopId)?.departure?.time! * 1000)
-                : new Date(`1970-01-01T${stopTime.departure_time}Z`);
-
-            return {
-                trip_id: stopTime.trip_id,
-                route_id: trips.find(trip => trip.trip_id === stopTime.trip_id)?.route_id,
-                departure_time: departureTime,
-                isRealtime,
+        if (gtfsTrip != null) {
+            const trip: Trip = {
+                tripId: realtimeTrip.tripUpdate.trip.tripId,
+                startDate: realtimeTrip.tripUpdate.trip.startDate,
+                scheduleRelationship: realtimeTrip.tripUpdate.trip.scheduleRelationship,
+                routeId: realtimeTrip.tripUpdate.trip.routeId,
+                directionId: realtimeTrip.tripUpdate.trip.directionId,
+                gtfsTrip: gtfsTrip,
             };
-        })
-        .filter(departure => departure.departure_time &&
-            !isNaN(departure.departure_time.getTime())) // Filter out invalid or past times
-        .sort((a, b) => a.departure_time.getTime() - b.departure_time.getTime());
+            tripMap.set(realtimeTrip.tripUpdate.trip.tripId, trip);
+        } else {
+            console.log(`Could not find trip for ${realtimeTrip.tripUpdate.trip.tripId}`);
+        }
+    });
+
+    const departures: Departure[] = realtimeTripUpdates.flatMap(realtimeTrip => {
+        // We need the trip and the stop time updates that are only relevant for our stopId.
+        const trip = tripMap.get(realtimeTrip.tripUpdate.trip.tripId);
+        if (trip == null) {
+            console.log(`Could not find trip for ${realtimeTrip.tripUpdate.trip.tripId}`);
+            return [];
+        }
+
+        const stopTimeUpdates = realtimeTrip.tripUpdate.stopTimeUpdate.filter(update => update.stopId.startsWith(stopId));
+
+        if (stopTimeUpdates.length == 0) {
+            console.log(`No stop time updates found for ${stopId} in ${realtimeTrip.tripUpdate.trip.tripId}`);
+            return [];
+        }
+
+        // there should only be one stopTimeUpdate I think?
+        if (stopTimeUpdates.length > 1) {
+            throw new Error("Multiple stop time updates found");
+        }
+        const stopTimeUpdate = stopTimeUpdates[0];
+
+        const unixTimestampString = stopTimeUpdate.departure["time"] as string
+        // Convert the Unix timestamp to a number and multiply by 1000 (to get milliseconds)
+        const unixTimestamp = parseInt(unixTimestampString) * 1000;
+
+        // Create a Date object from the timestamp
+        const departureDate = new Date(unixTimestamp);
+
+        // 
+        //const departureDate = new Date(departure.departure_time)
+
+        // Format the time in 12-hour format with AM/PM
+        const formattedTime = departureDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            //second: '2-digit',
+            hour12: true,  // 12-hour format with AM/PM
+        });
+
+        const timeDifference = departureDate.getTime() - Date.now();
+
+        // Convert the difference into a human-readable format
+        const minutesDifference = Math.floor(Math.abs(timeDifference) / (1000 * 60));
+        const hoursDifference = Math.floor(Math.abs(timeDifference) / (1000 * 60 * 60));
+        const daysDifference = Math.floor(Math.abs(timeDifference) / (1000 * 60 * 60 * 24));
+
+        let timeDisplayString = ""
+        if (timeDifference < 0) {
+            // Time is in the past
+            if (minutesDifference < 60) {
+                if (minutesDifference == 0) {
+                    timeDisplayString = `now`;
+                } else {
+                    if (minutesDifference == 1) {
+                        timeDisplayString = `${minutesDifference} minute ago`;
+                    } else {
+                        timeDisplayString = `${minutesDifference} minutes ago`;
+                    }
+                }
+            } else if (hoursDifference < 24) {
+                timeDisplayString = `${hoursDifference} hours ago`;
+            } else {
+                timeDisplayString = `${daysDifference} days ago`;
+            }
+        } else {
+            // Time is in the future
+            if (minutesDifference < 60) {
+                if (minutesDifference == 0) {
+                    timeDisplayString = `now`;
+                } else if (minutesDifference == 1) {
+                    timeDisplayString = `${minutesDifference} minute`;
+                } else {
+                    timeDisplayString = `${minutesDifference} minutes`;
+                }
+            } else if (hoursDifference < 24) {
+                timeDisplayString = `${hoursDifference} hours`;
+            } else {
+                timeDisplayString = `${daysDifference} days`;
+            }
+        }
+
+        const departure: Departure = {
+            trip: trip,
+            departure_time: departureDate.toUTCString(),
+            isRealtime: true,
+            departureDisplay: timeDisplayString,
+            departureDisplayShort: timeDisplayString
+        };
+
+        return departure;
+    })
+
+    // Sort departures by ascending time (earliest first)
+    departures.sort((a, b) => new Date(a.departure_time).getTime() - new Date(b.departure_time).getTime());
 
     try {
         return NextResponse.json(
