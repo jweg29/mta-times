@@ -22,7 +22,7 @@ export default function DepartureTimeCard({ departure }: { departure: Departure 
             <>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
                     <Text fw={700}>{departure.trip.routeId} - {departure.trip.gtfsTrip.trip_headsign}</Text>
-                    <Text size="md">{departure.departureDisplay} ({formattedTime})</Text>
+                    <Text size="md">{departure.departureDisplay}</Text>
                 </Card>
                 <Space h="md" />
             </>
