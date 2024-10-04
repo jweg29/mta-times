@@ -83,34 +83,8 @@ export interface GTFSRoute {
 
 export interface Route {
   gtfsRoute: GTFSRoute;
-  //routeType: RouteType;
   liveFeedUrl: LiveFeedUrl;
 }
-
-/*export enum RouteType {
-  A = "A",
-  C = "C",
-  E = "E",
-  B = "B",
-  D = "D",
-  F = "F",
-  M = "M",
-  G = "G",
-  J = "J",
-  Z = "Z",
-  N = "N",
-  Q = "Q",
-  R = "R",
-  W = "W",
-  L = "L",
-  One = "One",
-  Two = "Two",
-  Three = "Three",
-  Four = "Four",
-  Five = "Five",
-  Six = "Six",
-  Seven = "Seven",
-}*/
 
 export enum LiveFeedUrl {
   ACE = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",

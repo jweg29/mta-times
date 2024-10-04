@@ -23,7 +23,6 @@ const StopCard: React.FC = () => {
                     display: 'flex',          // Flexbox layout
                     justifyContent: 'center', // Center horizontally
                     alignItems: 'center',     // Center vertically
-                    // height: '200px',          // Card height for vertical centering
                     textAlign: 'center',      // Center text (if any) horizontally
                 }}>
                     <Text fw={700}>{selectedStop.gtfsStop.stop_name}</Text>

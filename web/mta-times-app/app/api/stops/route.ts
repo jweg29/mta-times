@@ -1,4 +1,4 @@
-import { fetchAllStops } from 'lib/gtfs';
+import { fetchAllStops } from 'lib/gtfsHelpers/gtfs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {

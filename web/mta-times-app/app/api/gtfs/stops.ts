@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Stop } from '../../lib/definitions';
-import { fetchAllStops } from '../../lib/gtfs';
+import { fetchAllStops } from '../../lib/gtfsHelpers/gtfs';
 
 export default async function handler(
   request: NextApiRequest,
