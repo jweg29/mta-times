@@ -167,7 +167,11 @@ function getDepartureDisplayString(departureDate: Date): string {//stopTimeUpdat
                 timeDisplayString = `${minutesDifference} minutes`;
             }
         } else if (hoursDifference < 24) {
-            timeDisplayString = `${hoursDifference} hours`;
+            if (hoursDifference == 1) {
+                timeDisplayString = `${hoursDifference} hour`;
+            } else {
+                timeDisplayString = `${hoursDifference} hours`;
+            }
         } else {
             timeDisplayString = `${daysDifference} days`;
         }

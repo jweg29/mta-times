@@ -28,7 +28,7 @@ const RouteCircle: React.FC<{ size: RouteCircleSize, route: Route }> = ({ size, 
             justifyContent: 'center',
             fontSize: fontSize,
             fontWeight: 'bold',
-            textAlign: 'center',
+            //textAlign: 'center',
         };
 
         return (

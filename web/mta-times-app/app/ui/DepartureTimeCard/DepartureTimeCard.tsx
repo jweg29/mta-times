@@ -28,10 +28,20 @@ export default function DepartureTimeCard({ departure }: { departure: Departure 
             ?
             <>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
-                    <Text fw={700}>{departure.trip.gtfsTrip.trip_headsign}</Text>
-                    <RouteCircle route={departure.trip.route} size={RouteCircleSize.small}></RouteCircle>
-                    <Text size="md">{departure.departureDisplay}</Text>
-                </Card>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', }}>
+                        {/* Left-aligned and vertically centered icon */}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <RouteCircle route={departure.trip.route} size={RouteCircleSize.large}></RouteCircle>
+                        </div>
+
+                        {/* Right-aligned text */}
+                        <div style={{ textAlign: 'left', }}>
+                            <Text fw={700}>{departure.trip.gtfsTrip.trip_headsign}</Text>
+                            <Text size="md">{departure.departureDisplay}</Text>
+                        </div>
+
+                    </div>
+                </Card >
                 <Space h="md" />
             </>
             :
