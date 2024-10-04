@@ -1,3 +1,4 @@
+import { LiveFeedUrl } from 'lib/definitions';
 import { NextRequest, NextResponse } from 'next/server';
 import { getRealtimeTripUpdates } from '../../lib/realtime';
 
@@ -21,7 +22,8 @@ export async function GET(request: NextRequest) {
     }*/
 
     try {
-        const realtimeTrips = await getRealtimeTripUpdates();
+        // fix
+        const realtimeTrips = await getRealtimeTripUpdates(LiveFeedUrl.ACE);
         return NextResponse.json(
             { realtimeTrips: realtimeTrips },
             { status: 200 });
