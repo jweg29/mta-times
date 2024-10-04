@@ -18,7 +18,7 @@ const UpcomingDepartures: React.FC = () => {
                 return;
             }
 
-            const departuresResponse = await fetch(`api/departures?stopId=${selectedStop.stop_id}`)
+            const departuresResponse = await fetch(`api/departures?stopId=${selectedStop.gtfsStop.stop_id}`)
 
             if (!departuresResponse.ok) {
                 console.log(`Failed to fetch departures`);
@@ -37,7 +37,8 @@ const UpcomingDepartures: React.FC = () => {
 
         fetchData();
 
-        const intervalId = setInterval(fetchData, 30000);//60000); // 60000 milliseconds = 1 minute
+        // refresh every 30 seconds? 15 seconds?
+        const intervalId = setInterval(fetchData, 15000);//30000);//60000); // 60000 milliseconds = 1 minute
         return () => clearInterval(intervalId); // Cleanup on unmount
 
     }, [selectedStop]); // Set the dependency array to selectedStop so it will update when the value changes i think?
@@ -48,14 +49,14 @@ const UpcomingDepartures: React.FC = () => {
         return (
             <>
                 <h2>Upcoming Departures 🕰️</h2>
-                <p>Loading departures for {selectedStop.stop_name}...⏳</p>
+                <p>Loading departures for {selectedStop.gtfsStop.stop_name}...⏳</p>
             </>
         )
     } else if (departures.length == 0) {
         return (
             <>
                 <h2>Upcoming Departures 🕰️</h2>
-                <p>No departures found for {selectedStop.stop_name} 😢</p>
+                <p>No departures found for {selectedStop.gtfsStop.stop_name} 😢</p>
             </>
         )
     } else {
