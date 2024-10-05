@@ -1,0 +1,31 @@
+// schema.prisma
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+model Stop {
+    id         Int       @id @default(autoincrement())
+    gtfsStopId Int?      @unique
+    GTFSStop   GTFSStop? @relation(fields: [gtfsStopId], references: [id])
+
+    @@map("stop") // Optional: to map this to a different table name
+}
+
+model GTFSStop {
+    id            Int    @id @default(autoincrement())
+    stopId        String
+    stopName      String
+    stopLat       String
+    stopLon       String
+    locationType  String
+    parentStation String
+    Stop          Stop?
+
+    @@map("gtfs_subway_stop") // Optional: to map this to a different table name
+}
