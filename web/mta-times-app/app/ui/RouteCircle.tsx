@@ -1,4 +1,4 @@
-import { Route } from "lib/definitions";
+import { Route } from "@prisma/client";
 import { RouteCircleSize } from "modelHelpers";
 import React from "react";
 
@@ -18,7 +18,7 @@ const RouteCircle: React.FC<{ size: RouteCircleSize, route: Route }> = ({ size, 
         }
 
         const circleStyle = {
-            backgroundColor: `${route.gtfsRoute.route_color}`,
+            backgroundColor: `${route.color}`,
             color: '#fff', // Text color (white to contrast with the background)
             width: widthHeight,
             height: widthHeight,
@@ -32,7 +32,7 @@ const RouteCircle: React.FC<{ size: RouteCircleSize, route: Route }> = ({ size, 
 
         return (
             <div style={circleStyle}>
-                {route.gtfsRoute.route_short_name}
+                {route.shortName}
             </div>
         );
     } else {

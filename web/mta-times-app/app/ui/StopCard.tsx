@@ -11,7 +11,7 @@ const StopCard: React.FC = () => {
     let routesDisplay = "";
     if (selectedStop != null && selectedStop.routes != null) {
         selectedStop.routes.forEach(route => {
-            routesDisplay += route.gtfsRoute.route_short_name + " ";
+            routesDisplay += route.shortName + " ";
         })
     }
 
@@ -25,7 +25,7 @@ const StopCard: React.FC = () => {
                     alignItems: 'center',     // Center vertically
                     textAlign: 'center',      // Center text (if any) horizontally
                 }}>
-                    <Text fw={700}>{selectedStop.gtfsStop.stop_name}</Text>
+                    <Text fw={700}>{selectedStop.name}</Text>
                     <Space h="sm" />
                     <RoutesDisplay routes={selectedStop.routes} />
                 </Card>

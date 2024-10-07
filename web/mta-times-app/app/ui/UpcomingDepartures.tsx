@@ -18,7 +18,7 @@ const UpcomingDepartures: React.FC = () => {
                 return;
             }
 
-            const departuresResponse = await fetch(`api/departures?stopId=${selectedStop.gtfsStop.stop_id}`)
+            const departuresResponse = await fetch(`api/departures?stopId=${selectedStop.gtfsStopId}`)
 
             if (!departuresResponse.ok) {
                 console.log(`Failed to fetch departures`);
@@ -49,14 +49,14 @@ const UpcomingDepartures: React.FC = () => {
         return (
             <>
                 <h2>Upcoming Departures 🕰️</h2>
-                <p>Loading departures for {selectedStop.gtfsStop.stop_name}...⏳</p>
+                <p>Loading departures for {selectedStop.name}...⏳</p>
             </>
         )
     } else if (departures.length == 0) {
         return (
             <>
                 <h2>Upcoming Departures 🕰️</h2>
-                <p>No departures found for {selectedStop.gtfsStop.stop_name} 😢</p>
+                <p>No departures found for {selectedStop.name} 😢</p>
             </>
         )
     } else {

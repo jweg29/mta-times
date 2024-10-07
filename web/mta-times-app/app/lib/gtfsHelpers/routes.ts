@@ -1,18 +1,19 @@
+import { Route } from '@prisma/client';
+import prisma from 'lib/prisma';
 import path from 'path';
-import { GTFSRoute, LiveFeedUrl, Route } from '../definitions';
+import { GTFSRoute, LiveFeedUrl, RouteData } from '../definitions';
 import { parseCSV } from '../utils';
 
 export const fetchRouteById = async (routeId: string): Promise<Route> => {
-    const routes = await fetchAllRoutes();
-    const filteredRoutes = routes.filter(route => route.gtfsRoute.route_id === routeId);
-    if (filteredRoutes.length > 0) {
-        return filteredRoutes[0];
-    } else {
-        return null;
-    }
+    const route = await prisma.route.findFirst({
+        where: {
+            gtfsRouteId: routeId
+        }
+    });
+    return route
 }
 
-export const fetchAllRoutes = async (): Promise<Route[]> => {
+export const loadRoutesFromStaticFiles = async (): Promise<RouteData[]> => {
     const routesPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'routes.txt');
     const gtfsRoutes: GTFSRoute[] = parseCSV(routesPath);
 
@@ -119,7 +120,7 @@ export const fetchAllRoutes = async (): Promise<Route[]> => {
                 break;
         }
 
-        const route: Route = {
+        const route: RouteData = {
             gtfsRoute: gtfsRoute,
             liveFeedUrl: liveFeeUrl
         }
@@ -127,4 +128,8 @@ export const fetchAllRoutes = async (): Promise<Route[]> => {
     })
 
     return routes;
+}
+
+export const fetchRoutes = async (): Promise<Route[]> => {
+    return await prisma.route.findMany();
 };

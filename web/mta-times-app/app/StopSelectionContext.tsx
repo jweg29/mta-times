@@ -1,12 +1,12 @@
 'use client'
 
+import { Route, Stop } from '@prisma/client';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { Stop } from './lib/definitions';
 
 // Define the shape of the context
 type StopSelectionContextType = {
-    selectedStop: Stop | null;
-    setSelectedStop: (stop: Stop | null) => void;
+    selectedStop: (Stop & { routes: Route[] }) | null;
+    setSelectedStop: (stop: (Stop & { routes: Route[] }) | null) => void;
 };
 
 // Create the context with default values
@@ -14,7 +14,7 @@ const StopSelectionContext = createContext<StopSelectionContextType | undefined>
 
 // Provider component to wrap around components needing this context
 export const StopSelectionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [selectedStop, setSelectedStop] = useState<Stop | null>(null);
+    const [selectedStop, setSelectedStop] = useState<(Stop & { routes: Route[] }) | null>(null);
 
     return (
         <StopSelectionContext.Provider value={{ selectedStop, setSelectedStop }}>

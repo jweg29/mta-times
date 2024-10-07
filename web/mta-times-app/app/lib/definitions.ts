@@ -1,3 +1,5 @@
+import { Route } from "@prisma/client";
+
 export interface GTFSStop {
   stop_id: string;
   stop_name: string;
@@ -7,9 +9,27 @@ export interface GTFSStop {
   parent_station: string;
 }
 
-export interface Stop {
+/**
+ * Meta class that contains all the stop data parsed from static data files.
+ */
+export interface StopData {
   gtfsStop: GTFSStop;
-  routes: Route[];
+  routes: RouteData[];
+  northDirectionLabel: string;
+  southDirectionLabel: string;
+  ada: string;
+  adaNotes: string;
+}
+
+export interface CSVStation {
+  stopId: string;
+  division: string;
+  line: string;
+  stopName: string;
+  northDirectionLabel: string;
+  southDirectionLabel: string;
+  ada: string;
+  adaNotes: string;
 }
 
 // Must match the GTFS schema defined in trips.txt.
@@ -81,7 +101,10 @@ export interface GTFSRoute {
   route_text_color: string;
 }
 
-export interface Route {
+/**
+ * Meta class that contains all the stop data parsed from static data files.
+ */
+export interface RouteData {
   gtfsRoute: GTFSRoute;
   liveFeedUrl: LiveFeedUrl;
 }

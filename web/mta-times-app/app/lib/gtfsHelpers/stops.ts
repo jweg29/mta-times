@@ -1,10 +1,21 @@
+import { Route, Stop } from '@prisma/client';
+import prisma from 'lib/prisma';
 import path from 'path';
-import { GTFSStop, GTFSTrip, Route, Stop, StopTime } from '../definitions';
+import { GTFSStop, GTFSTrip, RouteData, StopData, StopTime } from '../definitions';
 import { parseCSV } from '../utils';
-import { fetchAllRoutes } from './routes';
+import { loadRoutesFromStaticFiles } from './routes';
 import { fetchAllTrips } from './trips';
 
-export const fetchAllStops = async (): Promise<Stop[]> => {
+export const fetchStops = async (): Promise<(Stop & { routes: Route[] })[]> => {
+    const stops = await prisma.stop.findMany({
+        include: {
+            routes: true,
+        }
+    });
+    return stops;
+}
+
+export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
     const stopsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stops.txt');
     const parsedStops: GTFSStop[] = parseCSV(stopsPath);
 
@@ -21,16 +32,20 @@ export const fetchAllStops = async (): Promise<Stop[]> => {
         tripMap.set(trip.trip_id, trip);
     });
 
-    const routes = await fetchAllRoutes()
-    const routeMap: Map<string, Route> = new Map();
+    const routes = await loadRoutesFromStaticFiles()
+    const routeMap: Map<string, RouteData> = new Map();
     routes.forEach(route => {
         routeMap.set(route.gtfsRoute.route_id, route);
     });
 
     const stops = gtfsStops.map(gtfsStop => {
-        const stop: Stop = {
+        const stop: StopData = {
             gtfsStop: gtfsStop,
-            routes: []
+            routes: [],
+            northDirectionLabel: '',
+            southDirectionLabel: '',
+            ada: '',
+            adaNotes: ''
         }
         return stop;
     })
@@ -53,7 +68,7 @@ export const fetchAllStops = async (): Promise<Stop[]> => {
     });
 
     for (const stop of stops) {
-        const routesForStop = new Set<Route>();
+        const routesForStop = new Set<RouteData>();
         const stopTimes = stopTimesMap.get(stop.gtfsStop.stop_id);
 
         if (stopTimes == null || stopTimes.length == 0) {
@@ -100,7 +115,14 @@ export const getStopTimesByStopId = async (stopId: string): Promise<StopTime[]> 
     return stopTimes.filter(stopTime => stopTime.stop_id.startsWith(stopId));
 };
 
-export const getStopById = async (stopId: string): Promise<Stop | undefined> => {
-    const stops = await fetchAllStops();
-    return stops.find(stop => stop.gtfsStop.stop_id === stopId);
+export const getStopById = async (stopId: string): Promise<(Stop & { routes: Route[] }) | undefined> => {
+    const stop = await prisma.stop.findFirst({
+        where: {
+            gtfsStopId: stopId
+        },
+        include: {
+            routes: true,
+        }
+    })
+    return stop
 };

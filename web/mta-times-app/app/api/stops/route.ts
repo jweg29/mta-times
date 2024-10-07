@@ -1,9 +1,9 @@
-import { fetchAllStops } from 'lib/gtfsHelpers/gtfs';
+import { fetchStops } from 'lib/gtfsHelpers/stops';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const stops = await fetchAllStops();
+        const stops = await fetchStops();
         return NextResponse.json(
             stops,
             {

@@ -1,6 +1,7 @@
-import { Departure, Route, Trip } from "lib/definitions";
+import { Route } from "@prisma/client";
+import { Departure, Trip } from "lib/definitions";
 import { getRealtimeTripUpdates } from "lib/realtime";
-import { fetchAllRoutes } from "./routes";
+import { fetchRoutes } from "./routes";
 import { getStopById } from "./stops";
 import { getTripsByTripIds } from "./trips";
 
@@ -16,17 +17,17 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     const stop = await getStopById(stopId);
 
     // A stop should have one realtime feed type i think?
-    const realtimeTripUpdates = await getRealtimeTripUpdates(stop.routes[0].liveFeedUrl)
+    const realtimeTripUpdates = await getRealtimeTripUpdates(stop.routes[0].liveFeedURL)
 
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
     const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
     const gtfsTrips = await getTripsByTripIds(realtimeTripIds);
 
-    const routes = await fetchAllRoutes();
+    const routes = await fetchRoutes();
     const routeMap: Map<string, Route> = new Map();
     for (const route of routes) {
-        routeMap.set(route.gtfsRoute.route_id, route)
+        routeMap.set(route.gtfsRouteId, route)
     }
 
     realtimeTripUpdates.forEach(realtimeTrip => {

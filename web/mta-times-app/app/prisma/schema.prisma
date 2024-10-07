@@ -10,22 +10,31 @@ datasource db {
 }
 
 model Stop {
-    id         Int       @id @default(autoincrement())
-    gtfsStopId Int?      @unique
-    GTFSStop   GTFSStop? @relation(fields: [gtfsStopId], references: [id])
-
-    @@map("stop") // Optional: to map this to a different table name
+    id                  Int     @id @default(autoincrement())
+    gtfsStopId          String  @unique
+    name                String
+    lat                 String
+    lon                 String
+    northDirectionLabel String
+    southDirectionLabel String
+    ada                 String
+    adaNotes            String
+    locationType        String
+    parentStation       String
+    routes              Route[] @relation("StopRoutes")
 }
 
-model GTFSStop {
-    id            Int    @id @default(autoincrement())
-    stopId        String
-    stopName      String
-    stopLat       String
-    stopLon       String
-    locationType  String
-    parentStation String
-    Stop          Stop?
-
-    @@map("gtfs_subway_stop") // Optional: to map this to a different table name
+model Route {
+    id               Int    @id @default(autoincrement())
+    gtfsRouteId      String
+    agencyId         String
+    shortName        String
+    longName         String
+    type             String
+    routeDescription String
+    url              String
+    color            String
+    textColor        String
+    liveFeedURL      String
+    stops            Stop[] @relation("StopRoutes")
 }

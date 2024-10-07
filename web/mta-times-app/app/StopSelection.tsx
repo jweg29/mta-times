@@ -1,5 +1,5 @@
-import { fetchAllStops } from "lib/gtfsHelpers/stops";
-import { Stop } from "./lib/definitions";
+import { Stop } from "@prisma/client";
+import { fetchStops } from "lib/gtfsHelpers/stops";
 import InteractiveStopSelection from './ui/InteractiveStopSelection';
 
 type StopSelectionProps = {
@@ -8,6 +8,6 @@ type StopSelectionProps = {
 };
 
 export default async function StopSelection() {
-    const stops = await fetchAllStops();
+    const stops = await fetchStops();
     return (<InteractiveStopSelection stops={stops} />);
 }
