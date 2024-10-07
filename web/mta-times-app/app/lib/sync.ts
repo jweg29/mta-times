@@ -51,6 +51,24 @@ export const syncGTFSData = async () => {
         }
     });
 
+    // TODO: Consolidate and normalize stops
+    /*
+    ** There are some stops that should be consolidated. Geographically they are in the same location and they also have the same alphabetical name.
+    **
+    ** Examples:
+    ** - W 4 St-Wash Sq
+    ** - 59 St-Columbus Circle
+    ** - Broadway Junction
+    ** - Grand Central
+    ** - Times Sq-42 St
+    ** - 34 St-Herald Sq
+    ** - 14 St-Union Sq
+    ** - Canal St
+    ** - Delancy St-Essex St
+    ** - Jay St-MetroTech
+    ** - Atlantic Av-Barclays Ctr
+    */
+
     // Setup Routes
     const routes = await loadRoutesFromStaticFiles()
     // Delete all records from the Route table

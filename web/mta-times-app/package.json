@@ -4,7 +4,7 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@mantine/core": "^7.13.0",
