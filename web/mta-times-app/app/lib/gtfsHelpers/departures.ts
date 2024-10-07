@@ -1,5 +1,5 @@
 import { Route } from "@prisma/client";
-import { Departure, Trip } from "lib/definitions";
+import { Departure, RealtimeTrip, Trip } from "lib/definitions";
 import { getRealtimeTripUpdates } from "lib/realtime";
 import { fetchRoutes } from "./routes";
 import { getStopById } from "./stops";
@@ -16,8 +16,20 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
     const stop = await getStopById(stopId);
 
-    // A stop should have one realtime feed type i think?
-    const realtimeTripUpdates = await getRealtimeTripUpdates(stop.routes[0].liveFeedURL)
+    // A stop can have multiple realtime feeds (e.g. A C G)
+    // 1. Get all realtime feed urls
+    // 2. Fetch updates for each url
+    // 3. Merge all trip updates together
+    let realtimeTripUpdates: RealtimeTrip[] = [];// = []TripUpdate();
+    const feedURLs = new Set<string>();
+    for (const route of stop.routes) {
+        feedURLs.add(route.liveFeedURL);
+    }
+
+    for (const feedURL of Array.from(feedURLs.values())) {
+        const updates = await getRealtimeTripUpdates(feedURL);
+        realtimeTripUpdates = realtimeTripUpdates.concat(updates);
+    }
 
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
@@ -96,7 +108,9 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     // filter out the past departures.
     const upcomingDepartures = departures.filter(departure => {
         const departureDate = new Date(departure.departure_time);
-        return departureDate.getTime() > Date.now();
+        const timeDifference = departureDate.getTime() - Date.now();
+        // 120000 / 2 minute buffer
+        return departureDate.getTime() > (Date.now() - 120000);
     });
 
     return upcomingDepartures;
