@@ -1,8 +1,7 @@
-import { Route } from "lib/definitions";
+import { Route } from "@prisma/client";
 import { RouteCircleSize } from "modelHelpers";
 import RouteCircle from "./RouteCircle";
 
-//export default function DepartureTimeCard({ departure }: { departure: Departure }) {
 const RoutesDisplay: React.FC<{ routes: Route[] }> = ({ routes }) => {
     if (routes == null || routes == undefined) {
         return (<div></div>)
