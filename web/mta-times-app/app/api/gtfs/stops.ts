@@ -1,12 +1,12 @@
+import { Stop } from '@prisma/client';
+import { fetchStops } from 'lib/gtfsHelpers/stops';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Stop } from '../../lib/definitions';
-import { fetchAllStops } from '../../lib/gtfsHelpers/gtfs';
 
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<Stop[] | { error: String }>) {
   try {
-    const stops = await fetchAllStops();
+    const stops = await fetchStops();
     response.status(200).json(stops);
   } catch (error) {
     console.error('Error fetching GTFS stops:', error);

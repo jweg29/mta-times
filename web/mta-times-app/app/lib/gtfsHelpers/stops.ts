@@ -10,7 +10,10 @@ export const fetchStops = async (): Promise<(Stop & { routes: Route[] })[]> => {
     const stops = await prisma.stop.findMany({
         include: {
             routes: true,
-        }
+        },
+        orderBy: {
+            name: 'asc',
+        },
     });
     return stops;
 }
