@@ -52,7 +52,6 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
                 scheduleRelationship: realtimeTrip.tripUpdate.trip.scheduleRelationship,
                 routeId: realtimeTrip.tripUpdate.trip.routeId,
                 route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
-                directionId: realtimeTrip.tripUpdate.trip.directionId,
                 gtfsTrip: gtfsTrip,
             };
             tripMap.set(realtimeTrip.tripUpdate.trip.tripId, trip);
@@ -96,7 +95,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             departure_time: departureDate.toUTCString(),
             isRealtime: true,
             departureDisplay: timeDisplayString,
-            departureDisplayShort: timeDisplayString
+            departureDisplayShort: timeDisplayString,
+            directionId: trip.gtfsTrip.direction_id,
         };
 
         return departure;

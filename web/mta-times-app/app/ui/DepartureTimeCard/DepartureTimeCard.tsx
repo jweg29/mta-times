@@ -31,7 +31,7 @@ export default function DepartureTimeCard({ departure }: { departure: Departure 
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', }}>
                         {/* Left-aligned and vertically centered icon */}
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <RouteCircle route={departure.trip.route} size={RouteCircleSize.large}></RouteCircle>
+                            <RouteCircle route={departure.trip.route} size={RouteCircleSize.small}></RouteCircle>
                         </div>
 
                         {/* Right-aligned text */}

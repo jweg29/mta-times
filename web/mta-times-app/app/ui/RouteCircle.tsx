@@ -8,7 +8,7 @@ const RouteCircle: React.FC<{ size: RouteCircleSize, route: Route }> = ({ size, 
         let fontSize: string;
         switch (size) {
             case RouteCircleSize.small:
-                widthHeight = '20px';
+                widthHeight = '25px';
                 fontSize: '4px';
                 break;
             case RouteCircleSize.large:

@@ -48,7 +48,6 @@ export interface Trip {
   scheduleRelationship: string;
   routeId: string;
   route?: Route;
-  directionId: number;
   gtfsTrip: GTFSTrip
 }
 
@@ -67,6 +66,7 @@ export interface Departure {
   departureDisplay: string;
   departureDisplayShort: string;
   isRealtime: boolean;
+  directionId: string;
 }
 
 export interface StopTimeUpdate {

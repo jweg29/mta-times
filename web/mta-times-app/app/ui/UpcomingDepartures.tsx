@@ -1,9 +1,10 @@
 'use client'
 
+import { Card, Grid, Space, Text } from '@mantine/core';
 import { Departure } from "lib/definitions";
 import React, { useEffect, useState } from "react";
 import { useStopSelection } from "../StopSelectionContext";
-import DepartureTimeCard from "./DepartureTimeCard/DepartureTimeCard";
+import DepartureTimeCard from './DepartureTimeCard/DepartureTimeCard';
 
 const UpcomingDepartures: React.FC = () => {
     const [departures, setDepartures] = useState<Departure[] | null>(null);
@@ -37,14 +38,14 @@ const UpcomingDepartures: React.FC = () => {
 
         fetchData();
 
-        // refresh every 15 seconds
+        // refresh every 10 seconds
         const intervalId = setInterval(fetchData, 10000); // 60000 milliseconds = 1 minute
         return () => clearInterval(intervalId); // Cleanup on unmount
 
     }, [selectedStop]); // Set the dependency array to selectedStop so it will update when the value changes i think?
 
     if (selectedStop == null) {
-        return <h2>Upcoming Departures 🕰️</h2>
+        return (<></>)
     } else if (departures == null) {
         return (
             <>
@@ -52,25 +53,36 @@ const UpcomingDepartures: React.FC = () => {
                 <p>Loading departures for {selectedStop.name}...⏳</p>
             </>
         )
-    } else if (departures.length == 0) {
-        return (
-            <>
-                <h2>Upcoming Departures 🕰️</h2>
-                <p>No departures found for {selectedStop.name} 😢</p>
-            </>
-        )
-    } else {
-        return (
-            <>
-                <h2>Upcoming Departures 🕰️</h2>
-                {
-                    departures.map((departure) => (
-                        <DepartureTimeCard departure={departure} />
-                    ))
-                }
-            </>
-        )
     }
+
+    const northBoundDepartures = departures.filter(departure => departure.directionId == "0")
+    const southBoundDepartures = departures.filter(departure => departure.directionId == "1")
+
+    return (
+        <>
+            <Grid>
+                <Grid.Col span={6}>
+                    <Card padding="0">
+                        <Text fw={700} > {selectedStop.northDirectionLabel} </Text>
+                        <Space h="sm" />
+                        {northBoundDepartures.map((departure) => (
+                            <DepartureTimeCard departure={departure} />
+                        ))}
+                    </Card>
+                </Grid.Col>
+
+                <Grid.Col span={6}>
+                    <Card padding="0">
+                        <Text fw={700}> {selectedStop.southDirectionLabel} </Text>
+                        <Space h="sm" />
+                        {southBoundDepartures.map((departure) => (
+                            <DepartureTimeCard departure={departure} />
+                        ))}
+                    </Card>
+                </Grid.Col>
+            </Grid >
+        </>
+    )
 }
 
 export default UpcomingDepartures;

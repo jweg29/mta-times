@@ -8,7 +8,7 @@ import UpcomingDepartures from './ui/UpcomingDepartures';
 export default function Page() {
     const containerStyle: React.CSSProperties = {
         padding: '20px',
-        maxWidth: '600px',
+        maxWidth: '800px',
         margin: '0 auto', // Center the container horizontally
         textAlign: 'center', // Center text inside the container
     };
@@ -25,6 +25,7 @@ export default function Page() {
 
                     <Space h="md" />
                     <StopCard />
+                    <Space h="md" />
                     {/* <Space h="md" /> */}
 
                     {/* <Suspense fallback={<p>Loading...</p>}> */}
