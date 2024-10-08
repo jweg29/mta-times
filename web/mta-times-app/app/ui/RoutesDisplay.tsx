@@ -7,9 +7,11 @@ const RoutesDisplay: React.FC<{ routes: Route[] }> = ({ routes }) => {
         return (<div></div>)
     }
 
+    const standardRoutes = routes.filter(route => route.shortName.length == 1);
+
     return (
         <div style={{ display: 'flex', gap: '10px' }}>
-            {routes.map((route, index) => (
+            {standardRoutes.map((route, index) => (
                 <RouteCircle route={route} size={RouteCircleSize.large}></RouteCircle>
             ))}
         </div>
