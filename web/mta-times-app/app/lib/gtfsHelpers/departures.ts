@@ -10,7 +10,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     To retrieve departues we need to:
     1. Fetch realtime updates from getRealtimeTripUpdates().
     2. Get tripIds from each trip update and fetch the trip details.
-    3. Filter out trips that do not server the current stop.
+    3. Filter out trips that do not serve the current stop.
     4. Sort and filter out the remaining departure time?
     */
 

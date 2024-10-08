@@ -38,7 +38,7 @@ const UpcomingDepartures: React.FC = () => {
         fetchData();
 
         // refresh every 15 seconds
-        const intervalId = setInterval(fetchData, 15000); // 60000 milliseconds = 1 minute
+        const intervalId = setInterval(fetchData, 10000); // 60000 milliseconds = 1 minute
         return () => clearInterval(intervalId); // Cleanup on unmount
 
     }, [selectedStop]); // Set the dependency array to selectedStop so it will update when the value changes i think?

@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D815B9D32CB4705A001B46FC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D22CB4705A001B46FC /* LocationManager.swift */; };
+		D815B9D52CB47076001B46FC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D42CB47076001B46FC /* NetworkService.swift */; };
+		D815B9D82CB4717D001B46FC /* MapContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D72CB4717D001B46FC /* MapContentView.swift */; };
+		D815B9DA2CB471D2001B46FC /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D92CB471CF001B46FC /* StopView.swift */; };
 		D869BF322C446B4C005C375D /* MtaTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF312C446B4C005C375D /* MtaTimeApp.swift */; };
 		D869BF342C446B4C005C375D /* NavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF332C446B4C005C375D /* NavigationContentView.swift */; };
-		D869BF362C446B4C005C375D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF352C446B4C005C375D /* Item.swift */; };
+		D869BF362C446B4C005C375D /* Stop.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF352C446B4C005C375D /* Stop.swift */; };
 		D869BF382C446B4E005C375D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D869BF372C446B4E005C375D /* Assets.xcassets */; };
 		D869BF3B2C446B4E005C375D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D869BF3A2C446B4E005C375D /* Preview Assets.xcassets */; };
 		D869BF452C446B4E005C375D /* MtaTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF442C446B4E005C375D /* MtaTimeTests.swift */; };
@@ -41,10 +45,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D815B9D22CB4705A001B46FC /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		D815B9D42CB47076001B46FC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		D815B9D72CB4717D001B46FC /* MapContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContentView.swift; sourceTree = "<group>"; };
+		D815B9D92CB471CF001B46FC /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
 		D869BF2E2C446B4C005C375D /* MtaTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MtaTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D869BF312C446B4C005C375D /* MtaTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MtaTimeApp.swift; sourceTree = "<group>"; };
 		D869BF332C446B4C005C375D /* NavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContentView.swift; sourceTree = "<group>"; };
-		D869BF352C446B4C005C375D /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		D869BF352C446B4C005C375D /* Stop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stop.swift; sourceTree = "<group>"; };
 		D869BF372C446B4E005C375D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D869BF3A2C446B4E005C375D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D869BF402C446B4E005C375D /* MtaTimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MtaTimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D815B9D62CB4714E001B46FC /* models */ = {
+			isa = PBXGroup;
+			children = (
+				D869BF352C446B4C005C375D /* Stop.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		D869BF252C446B4C005C375D = {
 			isa = PBXGroup;
 			children = (
@@ -108,11 +124,15 @@
 		D869BF302C446B4C005C375D /* MtaTime */ = {
 			isa = PBXGroup;
 			children = (
+				D815B9D62CB4714E001B46FC /* models */,
 				D869BF5D2C446B84005C375D /* Constants.swift */,
 				D869BF5F2C446D33005C375D /* ContentView.swift */,
-				D869BF352C446B4C005C375D /* Item.swift */,
+				D815B9D42CB47076001B46FC /* NetworkService.swift */,
 				D869BF312C446B4C005C375D /* MtaTimeApp.swift */,
+				D815B9D72CB4717D001B46FC /* MapContentView.swift */,
+				D815B9D92CB471CF001B46FC /* StopView.swift */,
 				D869BF682C447E9F005C375D /* NetworkManager.swift */,
+				D815B9D22CB4705A001B46FC /* LocationManager.swift */,
 				D869BF332C446B4C005C375D /* NavigationContentView.swift */,
 				D869BF372C446B4E005C375D /* Assets.xcassets */,
 				D869BF392C446B4E005C375D /* Preview Content */,
@@ -284,10 +304,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D869BF342C446B4C005C375D /* NavigationContentView.swift in Sources */,
+				D815B9D52CB47076001B46FC /* NetworkService.swift in Sources */,
 				D869BF602C446D33005C375D /* ContentView.swift in Sources */,
-				D869BF362C446B4C005C375D /* Item.swift in Sources */,
+				D815B9D82CB4717D001B46FC /* MapContentView.swift in Sources */,
+				D869BF362C446B4C005C375D /* Stop.swift in Sources */,
+				D815B9D32CB4705A001B46FC /* LocationManager.swift in Sources */,
 				D869BF322C446B4C005C375D /* MtaTimeApp.swift in Sources */,
 				D869BF5E2C446B84005C375D /* Constants.swift in Sources */,
+				D815B9DA2CB471D2001B46FC /* StopView.swift in Sources */,
 				D869BF692C447E9F005C375D /* NetworkManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
