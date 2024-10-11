@@ -8,11 +8,16 @@
 import Foundation
 
 struct Stop: Codable {
+    let id: Int
+    let gtfsStopID: String
     let name: String
-}
-
-struct Route: Codable {
-    let longName: String
-    let shortName: String
-    let color: String
+    let lat: String
+    let lon: String
+    let northDirectionLabel: String
+    let southDirectionLabel: String
+    let ada: String
+    let adaNotes: String
+    let locationType: String
+    let parentStation: String
+    let routes: [Route]
 }

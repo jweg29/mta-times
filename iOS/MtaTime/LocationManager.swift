@@ -5,14 +5,6 @@
 //  Created by James Wegner on 10/7/24.
 //
 
-
-//
-//  LocationManager.swift
-//  MapListSheet
-//
-//  Created by James Wegner on 8/6/24.
-//
-
 import CoreLocation
 import Foundation
 import Combine
@@ -21,7 +13,7 @@ import SwiftUI
 
 public final class LocationManager: NSObject {
 
-    public static let shared = LocationManager()
+    @MainActor public static let shared = LocationManager()
 
     private let locationManager: CLLocationManager
 

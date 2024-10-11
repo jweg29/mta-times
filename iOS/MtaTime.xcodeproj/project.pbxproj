@@ -11,8 +11,15 @@
 		D815B9D52CB47076001B46FC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D42CB47076001B46FC /* NetworkService.swift */; };
 		D815B9D82CB4717D001B46FC /* MapContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D72CB4717D001B46FC /* MapContentView.swift */; };
 		D815B9DA2CB471D2001B46FC /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9D92CB471CF001B46FC /* StopView.swift */; };
+		D815B9DC2CB5853A001B46FC /* StopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9DB2CB5853A001B46FC /* StopViewModel.swift */; };
+		D815B9DE2CB5BAE6001B46FC /* RouteCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9DD2CB5BAE6001B46FC /* RouteCircleView.swift */; };
+		D815B9E02CB5BAFA001B46FC /* RouteDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9DF2CB5BAFA001B46FC /* RouteDisplay.swift */; };
+		D815B9E22CB5BD90001B46FC /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9E12CB5BD90001B46FC /* Route.swift */; };
+		D815B9E42CB5BE8B001B46FC /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9E32CB5BE8B001B46FC /* HexColor.swift */; };
+		D815B9E62CB5C2D2001B46FC /* DepartureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9E52CB5C2D2001B46FC /* DepartureRow.swift */; };
+		D815B9E82CB5DA29001B46FC /* Departure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9E72CB5DA29001B46FC /* Departure.swift */; };
+		D815B9EA2CB5DA34001B46FC /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815B9E92CB5DA34001B46FC /* Trip.swift */; };
 		D869BF322C446B4C005C375D /* MtaTimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF312C446B4C005C375D /* MtaTimeApp.swift */; };
-		D869BF342C446B4C005C375D /* NavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF332C446B4C005C375D /* NavigationContentView.swift */; };
 		D869BF362C446B4C005C375D /* Stop.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF352C446B4C005C375D /* Stop.swift */; };
 		D869BF382C446B4E005C375D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D869BF372C446B4E005C375D /* Assets.xcassets */; };
 		D869BF3B2C446B4E005C375D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D869BF3A2C446B4E005C375D /* Preview Assets.xcassets */; };
@@ -24,7 +31,6 @@
 		D869BF632C447E2A005C375D /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF622C447E2A005C375D /* SwiftProtobuf */; };
 		D869BF652C447E2A005C375D /* SwiftProtobufPluginLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF642C447E2A005C375D /* SwiftProtobufPluginLibrary */; };
 		D869BF672C447E2A005C375D /* protoc-gen-swift in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF662C447E2A005C375D /* protoc-gen-swift */; };
-		D869BF692C447E9F005C375D /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF682C447E9F005C375D /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,9 +55,16 @@
 		D815B9D42CB47076001B46FC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		D815B9D72CB4717D001B46FC /* MapContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContentView.swift; sourceTree = "<group>"; };
 		D815B9D92CB471CF001B46FC /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
+		D815B9DB2CB5853A001B46FC /* StopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopViewModel.swift; sourceTree = "<group>"; };
+		D815B9DD2CB5BAE6001B46FC /* RouteCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteCircleView.swift; sourceTree = "<group>"; };
+		D815B9DF2CB5BAFA001B46FC /* RouteDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDisplay.swift; sourceTree = "<group>"; };
+		D815B9E12CB5BD90001B46FC /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		D815B9E32CB5BE8B001B46FC /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
+		D815B9E52CB5C2D2001B46FC /* DepartureRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartureRow.swift; sourceTree = "<group>"; };
+		D815B9E72CB5DA29001B46FC /* Departure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Departure.swift; sourceTree = "<group>"; };
+		D815B9E92CB5DA34001B46FC /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		D869BF2E2C446B4C005C375D /* MtaTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MtaTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D869BF312C446B4C005C375D /* MtaTimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MtaTimeApp.swift; sourceTree = "<group>"; };
-		D869BF332C446B4C005C375D /* NavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContentView.swift; sourceTree = "<group>"; };
 		D869BF352C446B4C005C375D /* Stop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stop.swift; sourceTree = "<group>"; };
 		D869BF372C446B4E005C375D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D869BF3A2C446B4E005C375D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -62,7 +75,6 @@
 		D869BF502C446B4E005C375D /* MtaTimeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MtaTimeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D869BF5D2C446B84005C375D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D869BF5F2C446D33005C375D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		D869BF682C447E9F005C375D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +108,10 @@
 		D815B9D62CB4714E001B46FC /* models */ = {
 			isa = PBXGroup;
 			children = (
+				D815B9E72CB5DA29001B46FC /* Departure.swift */,
+				D815B9E12CB5BD90001B46FC /* Route.swift */,
 				D869BF352C446B4C005C375D /* Stop.swift */,
+				D815B9E92CB5DA34001B46FC /* Trip.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -124,18 +139,16 @@
 		D869BF302C446B4C005C375D /* MtaTime */ = {
 			isa = PBXGroup;
 			children = (
-				D815B9D62CB4714E001B46FC /* models */,
-				D869BF5D2C446B84005C375D /* Constants.swift */,
-				D869BF5F2C446D33005C375D /* ContentView.swift */,
-				D815B9D42CB47076001B46FC /* NetworkService.swift */,
-				D869BF312C446B4C005C375D /* MtaTimeApp.swift */,
-				D815B9D72CB4717D001B46FC /* MapContentView.swift */,
-				D815B9D92CB471CF001B46FC /* StopView.swift */,
-				D869BF682C447E9F005C375D /* NetworkManager.swift */,
-				D815B9D22CB4705A001B46FC /* LocationManager.swift */,
-				D869BF332C446B4C005C375D /* NavigationContentView.swift */,
 				D869BF372C446B4E005C375D /* Assets.xcassets */,
+				D869BF5D2C446B84005C375D /* Constants.swift */,
+				D815B9E32CB5BE8B001B46FC /* HexColor.swift */,
+				D815B9D22CB4705A001B46FC /* LocationManager.swift */,
+				D815B9D62CB4714E001B46FC /* models */,
+				D869BF312C446B4C005C375D /* MtaTimeApp.swift */,
+				D815B9D42CB47076001B46FC /* NetworkService.swift */,
 				D869BF392C446B4E005C375D /* Preview Content */,
+				D815B9DB2CB5853A001B46FC /* StopViewModel.swift */,
+				D86D4F1E2CB9912A00957C87 /* SwiftUIViews */,
 			);
 			path = MtaTime;
 			sourceTree = "<group>";
@@ -163,6 +176,19 @@
 				D869BF502C446B4E005C375D /* MtaTimeUITestsLaunchTests.swift */,
 			);
 			path = MtaTimeUITests;
+			sourceTree = "<group>";
+		};
+		D86D4F1E2CB9912A00957C87 /* SwiftUIViews */ = {
+			isa = PBXGroup;
+			children = (
+				D869BF5F2C446D33005C375D /* ContentView.swift */,
+				D815B9E52CB5C2D2001B46FC /* DepartureRow.swift */,
+				D815B9D72CB4717D001B46FC /* MapContentView.swift */,
+				D815B9DD2CB5BAE6001B46FC /* RouteCircleView.swift */,
+				D815B9DF2CB5BAFA001B46FC /* RouteDisplay.swift */,
+				D815B9D92CB471CF001B46FC /* StopView.swift */,
+			);
+			path = SwiftUIViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,16 +329,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D869BF342C446B4C005C375D /* NavigationContentView.swift in Sources */,
+				D815B9DC2CB5853A001B46FC /* StopViewModel.swift in Sources */,
 				D815B9D52CB47076001B46FC /* NetworkService.swift in Sources */,
 				D869BF602C446D33005C375D /* ContentView.swift in Sources */,
 				D815B9D82CB4717D001B46FC /* MapContentView.swift in Sources */,
+				D815B9EA2CB5DA34001B46FC /* Trip.swift in Sources */,
 				D869BF362C446B4C005C375D /* Stop.swift in Sources */,
 				D815B9D32CB4705A001B46FC /* LocationManager.swift in Sources */,
 				D869BF322C446B4C005C375D /* MtaTimeApp.swift in Sources */,
+				D815B9DE2CB5BAE6001B46FC /* RouteCircleView.swift in Sources */,
+				D815B9E02CB5BAFA001B46FC /* RouteDisplay.swift in Sources */,
+				D815B9E82CB5DA29001B46FC /* Departure.swift in Sources */,
+				D815B9E22CB5BD90001B46FC /* Route.swift in Sources */,
 				D869BF5E2C446B84005C375D /* Constants.swift in Sources */,
+				D815B9E42CB5BE8B001B46FC /* HexColor.swift in Sources */,
 				D815B9DA2CB471D2001B46FC /* StopView.swift in Sources */,
-				D869BF692C447E9F005C375D /* NetworkManager.swift in Sources */,
+				D815B9E62CB5C2D2001B46FC /* DepartureRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +441,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -464,6 +497,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -479,11 +513,13 @@
 				DEVELOPMENT_TEAM = N3YC5A36JD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -492,7 +528,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.westfourth.MtaTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -508,11 +544,13 @@
 				DEVELOPMENT_TEAM = N3YC5A36JD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -521,7 +559,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.westfourth.MtaTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
