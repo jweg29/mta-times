@@ -18,6 +18,45 @@ export const fetchStops = async (): Promise<(Stop & { routes: Route[] })[]> => {
     return stops;
 }
 
+/**
+ * 
+ * @param lat
+ * @param lon 
+ * @returns The 10 closest stops from the given lat lon.
+ */
+export const fetchStopByLatLon = async (lat: number, lon: number): Promise<(Stop & { stop: Route[] })[]> => {
+    const stops = await fetchStops();
+
+    // Radius of the Earth in kilometers
+    const earthRadiusKm = 6371;
+
+    // Haversine formula to calculate distance between two latitude/longitude points
+    const haversineDistance = (lat1, lon1, lat2, lon2) => {
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return earthRadiusKm * c;
+    };
+
+    // Map each stop to an object with the distance, sort by distance, and return the top `numStops` closest stops
+    return stops
+        .map((stop) => ({
+            stop,
+            distance: haversineDistance(lat, lon, stop.lat, stop.lon),
+        }))
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 10)
+        .map((item) => item.stop as unknown as (Stop & { stop: Route[] })); // Type assertion to ensure TypeScript understands this is a Stop object
+}
+
 export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
     const stopsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stops.txt');
     const parsedStops: GTFSStop[] = parseCSV(stopsPath);

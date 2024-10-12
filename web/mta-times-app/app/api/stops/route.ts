@@ -1,9 +1,19 @@
-import { fetchStops } from 'lib/gtfsHelpers/stops';
+import { Route, Stop } from '@prisma/client';
+import { fetchStopByLatLon, fetchStops } from 'lib/gtfsHelpers/stops';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const stops = await fetchStops();
+        const lat = request.nextUrl.searchParams.get("lat") as string;
+        const lon = request.nextUrl.searchParams.get("lon") as string;
+
+        let stops: Stop & { stop: Route[] }[]
+        if (lat != undefined && lon != undefined) {
+            stops = await fetchStopByLatLon(Number(lat), Number(lon)) as unknown as Stop & { stop: Route[] }[];
+        } else {
+            stops = await fetchStops() as unknown as Stop & { stop: Route[] }[];
+        }
+
         return NextResponse.json(
             stops,
             {
