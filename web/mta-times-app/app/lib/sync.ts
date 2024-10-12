@@ -1,3 +1,7 @@
+import AdmZip from 'adm-zip';
+import fs from 'fs';
+import { NextResponse } from 'next/server';
+import fetch from 'node-fetch';
 import path from 'path';
 import { CSVStation } from './definitions';
 import { loadRoutesFromStaticFiles } from './gtfsHelpers/routes';
@@ -161,6 +165,33 @@ export const syncGTFSData = async () => {
 /**
  * Downloads and updates the latest static GTFS files.
  */
-export const updateStaticGTFS = async () => {
+export const updateStaticGTFS = async (): Promise<NextResponse> => {
+    const url = 'http://web.mta.info/developers/data/nyct/subway/google_transit.zip';
+    const zipPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'google_transit.zip');
+    const extractPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS'); // Change this to your desired directory
 
+    try {
+        // Step 1: Download the ZIP file
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = new Uint8Array(arrayBuffer); // Convert to Uint8Array
+
+        // Step 2: Save the ZIP file
+        fs.writeFileSync(zipPath, buffer);
+
+        // Step 3: Extract the ZIP file
+        const zip = new AdmZip(zipPath);
+        zip.extractAllTo(extractPath, true);
+
+        // Step 4: Clean up by removing the ZIP file
+        fs.unlinkSync(zipPath);
+        return NextResponse.json({ "response": "GTFS files downloaded and synced ✅" }, { status: 200 });
+
+    } catch (error) {
+        console.error('Error downloading or extracting the file:', error);
+        return NextResponse.json(
+            { error: `Failed to sync GTFS static files: ${error}` },
+            { status: 500 }
+        )
+    }
 }
