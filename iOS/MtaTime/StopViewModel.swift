@@ -9,8 +9,30 @@ import Foundation
 
 @MainActor
 final class StopViewModel: ObservableObject {
+
+    enum DepartureFilter: Int {
+        case all = 0
+        case northBound = 1
+        case southBound = 2
+    }
+
     @Published var stop: Stop
     @Published var departures: [Departure]
+
+    func filteredDepartures(filter: DepartureFilter) -> [Departure] {
+        switch filter {
+        case .all:
+            return departures
+        case .northBound:
+            return departures.filter {
+                $0.directionId == "0"
+            }
+        case .southBound:
+            return departures.filter {
+                $0.directionId == "1"
+            }
+        }
+    }
 
     init(_ stop: Stop) {
         self.stop = stop

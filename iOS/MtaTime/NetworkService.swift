@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CoreLocation
 import Foundation
 import SwiftUI
 
@@ -21,15 +22,20 @@ enum NetworkError: LocalizedError {
 }
 
 enum Endpoint {
+    static let host = "https://mta-times.vercel.app"
+
     case fetchStops
+    case fetchNearbyStops(CLLocationCoordinate2D)
     case fetchDepartures(Stop)
 
     var url: URL? {
         switch self {
         case .fetchStops:
-            URL(string: "https://mta-times.vercel.app/api/stops")
+            URL(string: "\(Endpoint.host)/api/stops")
+        case .fetchNearbyStops(let coordinate):
+            URL(string: "\(Endpoint.host)/api/stops?lat=\(coordinate.latitude)lon=\(coordinate.longitude)")
         case .fetchDepartures(let stop):
-            URL(string: "https://mta-times.vercel.app/api/departures?stopId=\(stop.gtfsStopID)")
+            URL(string: "\(Endpoint.host)/api/departures?stopId=\(stop.gtfsStopID)")
         }
     }
 }
@@ -38,7 +44,18 @@ public final class NetworkService: NSObject, Sendable {
 
     public static let shared = NetworkService()
 
-    private override init() { }
+    private override init() {}
+
+    func fetchNearbyStops(coordinate: CLLocationCoordinate2D) async throws -> [Stop] {
+        guard let url = Endpoint.fetchNearbyStops(coordinate).url else {
+            throw NetworkError.invalidURL
+        }
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        let decoder = JSONDecoder()
+        return try decoder.decode([Stop].self, from: data)
+    }
 
     func fetchDepartures(stop: Stop) async throws -> [Departure] {
         /*return [
@@ -71,7 +88,7 @@ public final class NetworkService: NSObject, Sendable {
                       departureDisplay: "now",
                       departureDisplayShort: "now",
                       isRealtime: true,
-                      directionId: ""),
+                      directionId: "1"),
             ////
             Departure(id: "1",
                       trip:
@@ -96,7 +113,7 @@ public final class NetworkService: NSObject, Sendable {
                                     tripId: "1",
                                     serviceId: "C",
                                     tripHeadsign: "168 St",
-                                    directionId: "1",
+                                    directionId: "0",
                                     shapeId: "")),
                       departureTime: "",
                       departureDisplay: "2 minutes",

@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct Stop: Codable {
+struct Stop: Codable, Sendable, Equatable, Observable {
+    static func == (lhs: Stop, rhs: Stop) -> Bool {
+        return lhs.gtfsStopID == rhs.gtfsStopID
+    }
+
     let id: Int
     let gtfsStopID: String
     let name: String

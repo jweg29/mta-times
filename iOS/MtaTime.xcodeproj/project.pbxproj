@@ -28,9 +28,7 @@
 		D869BF512C446B4E005C375D /* MtaTimeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF502C446B4E005C375D /* MtaTimeUITestsLaunchTests.swift */; };
 		D869BF5E2C446B84005C375D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF5D2C446B84005C375D /* Constants.swift */; };
 		D869BF602C446D33005C375D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D869BF5F2C446D33005C375D /* ContentView.swift */; };
-		D869BF632C447E2A005C375D /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF622C447E2A005C375D /* SwiftProtobuf */; };
-		D869BF652C447E2A005C375D /* SwiftProtobufPluginLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF642C447E2A005C375D /* SwiftProtobufPluginLibrary */; };
-		D869BF672C447E2A005C375D /* protoc-gen-swift in Frameworks */ = {isa = PBXBuildFile; productRef = D869BF662C447E2A005C375D /* protoc-gen-swift */; };
+		D86D4F202CBA22E400957C87 /* NearestStopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86D4F1F2CBA22E400957C87 /* NearestStopViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +73,7 @@
 		D869BF502C446B4E005C375D /* MtaTimeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MtaTimeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D869BF5D2C446B84005C375D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D869BF5F2C446D33005C375D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D86D4F1F2CBA22E400957C87 /* NearestStopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestStopViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,9 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D869BF652C447E2A005C375D /* SwiftProtobufPluginLibrary in Frameworks */,
-				D869BF632C447E2A005C375D /* SwiftProtobuf in Frameworks */,
-				D869BF672C447E2A005C375D /* protoc-gen-swift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +141,7 @@
 				D815B9D22CB4705A001B46FC /* LocationManager.swift */,
 				D815B9D62CB4714E001B46FC /* models */,
 				D869BF312C446B4C005C375D /* MtaTimeApp.swift */,
+				D86D4F1F2CBA22E400957C87 /* NearestStopViewModel.swift */,
 				D815B9D42CB47076001B46FC /* NetworkService.swift */,
 				D869BF392C446B4E005C375D /* Preview Content */,
 				D815B9DB2CB5853A001B46FC /* StopViewModel.swift */,
@@ -208,9 +205,6 @@
 			);
 			name = MtaTime;
 			packageProductDependencies = (
-				D869BF622C447E2A005C375D /* SwiftProtobuf */,
-				D869BF642C447E2A005C375D /* SwiftProtobufPluginLibrary */,
-				D869BF662C447E2A005C375D /* protoc-gen-swift */,
 			);
 			productName = MtaTime;
 			productReference = D869BF2E2C446B4C005C375D /* MtaTime.app */;
@@ -285,7 +279,6 @@
 			);
 			mainGroup = D869BF252C446B4C005C375D;
 			packageReferences = (
-				D869BF612C447E2A005C375D /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 			);
 			productRefGroup = D869BF2F2C446B4C005C375D /* Products */;
 			projectDirPath = "";
@@ -333,6 +326,7 @@
 				D815B9D52CB47076001B46FC /* NetworkService.swift in Sources */,
 				D869BF602C446D33005C375D /* ContentView.swift in Sources */,
 				D815B9D82CB4717D001B46FC /* MapContentView.swift in Sources */,
+				D86D4F202CBA22E400957C87 /* NearestStopViewModel.swift in Sources */,
 				D815B9EA2CB5DA34001B46FC /* Trip.swift in Sources */,
 				D869BF362C446B4C005C375D /* Stop.swift in Sources */,
 				D815B9D32CB4705A001B46FC /* LocationManager.swift in Sources */,
@@ -433,6 +427,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "I need your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "I need your location";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -491,6 +487,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "I need your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "I need your location";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -519,7 +517,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -550,7 +548,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -680,35 +678,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D869BF612C447E2A005C375D /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-protobuf.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.27.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D869BF622C447E2A005C375D /* SwiftProtobuf */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D869BF612C447E2A005C375D /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = SwiftProtobuf;
-		};
-		D869BF642C447E2A005C375D /* SwiftProtobufPluginLibrary */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D869BF612C447E2A005C375D /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = SwiftProtobufPluginLibrary;
-		};
-		D869BF662C447E2A005C375D /* protoc-gen-swift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D869BF612C447E2A005C375D /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = "protoc-gen-swift";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D869BF262C446B4C005C375D /* Project object */;
 }

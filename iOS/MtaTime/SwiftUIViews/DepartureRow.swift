@@ -62,3 +62,4 @@ struct DepartureRow: View {
             isRealtime: true,
             directionId: "0"))
 }
+

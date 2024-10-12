@@ -7,8 +7,13 @@
 
 import Foundation
 
-struct Departure: Codable, Identifiable {
-    var id: String
+final class Departure: Codable, Identifiable, Equatable, ObservableObject, Sendable {
+    static func == (lhs: Departure, rhs: Departure) -> Bool {
+        return lhs.id == rhs.id && lhs.departureTime == rhs.departureTime
+            && lhs.departureDisplay == rhs.departureDisplay
+    }
+
+    let id: String
     let trip: Trip
     let departureTime: String
     let departureDisplay: String
@@ -26,7 +31,10 @@ struct Departure: Codable, Identifiable {
         case directionId
     }
 
-    init(id: String, trip: Trip, departureTime: String, departureDisplay: String, departureDisplayShort: String, isRealtime: Bool, directionId: String) {
+    init(
+        id: String, trip: Trip, departureTime: String, departureDisplay: String, departureDisplayShort: String,
+        isRealtime: Bool, directionId: String
+    ) {
         self.id = id
         self.trip = trip
         self.departureTime = departureTime
@@ -36,7 +44,7 @@ struct Departure: Codable, Identifiable {
         self.directionId = directionId
     }
 
-    init(from decoder: any Decoder) throws {
+    required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.trip = try container.decode(Trip.self, forKey: .trip)
         self.id = trip.tripId

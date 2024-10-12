@@ -26,6 +26,8 @@ const InteractiveStopSelection: React.FC<Props> = ({ stops }) => {
     return (
         <>
             {<Select
+                style={{ 'font-size': "20px;" }}
+                fz="lg"
                 label="Subway stops"
                 placeholder="Select a stop"
                 data={

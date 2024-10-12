@@ -11,11 +11,18 @@ import Combine
 import MapKit
 import SwiftUI
 
-public final class LocationManager: NSObject {
+protocol LocationManagerDeleate: AnyObject {
+    func didUpdateLocations(_ locations: [CLLocation])
+}
+
+public final class LocationManager: NSObject, ObservableObject {
 
     @MainActor public static let shared = LocationManager()
 
     private let locationManager: CLLocationManager
+
+    //weak var delegate: LocationManagerDeleate?
+    @Published var userLocation: CLLocation?
 
     public func requestLocationAccess() {
         locationManager.requestWhenInUseAuthorization()
@@ -39,6 +46,9 @@ public final class LocationManager: NSObject {
 extension LocationManager: CLLocationManagerDelegate {
 
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("locationManager didUpdateLocations")
+        userLocation = locations.last
+       // delegate?.didUpdateLocations(locations)
     }
 
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
