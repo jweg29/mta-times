@@ -12,6 +12,7 @@ struct RouteCircleView: View {
     enum Size {
         case standard
         case small
+        case verySmall
         case large
     }
 
@@ -34,6 +35,8 @@ struct RouteCircleView: View {
             return .init(width: 25, height: 25)
         case .large:
             return .init(width: 100, height: 100)
+        case .verySmall:
+            return .init(width: 20, height: 20)
         }
     }
 
@@ -45,6 +48,8 @@ struct RouteCircleView: View {
             return .body
         case .large:
             return .title
+        case .verySmall:
+            return .caption
         }
     }
 

@@ -5,9 +5,9 @@
 //  Created by James Wegner on 10/7/24.
 //
 
+import Combine
 import CoreLocation
 import Foundation
-import Combine
 import MapKit
 import SwiftUI
 
@@ -21,7 +21,7 @@ public final class LocationManager: NSObject, ObservableObject {
 
     private let locationManager: CLLocationManager
 
-    //weak var delegate: LocationManagerDeleate?
+    weak var delegate: LocationManagerDeleate?
     @Published var userLocation: CLLocation?
 
     public func requestLocationAccess() {
@@ -52,7 +52,7 @@ extension LocationManager: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("locationManager didUpdateLocations")
         userLocation = locations.last
-       // delegate?.didUpdateLocations(locations)
+        delegate?.didUpdateLocations(locations)
     }
 
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {

@@ -12,27 +12,21 @@ import SwiftUI
 @main
 struct MtaTimeApp: App {
 
-    @StateObject private var locationManager = LocationManager.shared
+    //@StateObject private var locationManager = LocationManager.shared
 
     //@StateObject var nearestStop: Stop?
 
     @ObservedObject private var nearestStopViewModel = NearestStopViewModel()
 
     init() {
-        //LocationManager.shared.delegate = self
-        LocationManager.shared.requestLocationAccess()
-        LocationManager.shared.startLocationUpdates()
+        //LocationManager.shared.requestLocationAccess()
+        //LocationManager.shared.startLocationUpdates()
     }
 
     var body: some Scene {
         WindowGroup {
-            if let nearestStop = nearestStopViewModel.nearestStop {
-                StopView(
-                    stop: nearestStop
-                )
-            } else {
-                Text("Fetching nearest stop...")
-            }
+            MapContentView()
+
 
             /*StopView(
                 stop:
@@ -91,16 +85,6 @@ struct MtaTimeApp: App {
                         ]
                     )
             )*/
-        }
-        .onChange(of: locationManager.userLocation) { newLocation in
-            nearestStopViewModel.userLocation = newLocation
-            /*if let location = newLocation {
-                Task {
-                    let nearbyStops = try await NetworkService.shared.fetchNearbyStops(coordinate: location.coordinate)
-                    nearestStop = nearbyStops.first
-                }
-                //fetchDataForLocation(location)
-            }*/
         }
     }
 }

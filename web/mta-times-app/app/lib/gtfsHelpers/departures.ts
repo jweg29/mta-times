@@ -43,7 +43,9 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     }
 
     realtimeTripUpdates.forEach(realtimeTrip => {
-        const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip.trip_id.includes(realtimeTrip.tripUpdate.trip.tripId));
+        // live include stuff that doesn't match gtfs
+        const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.slice(0, -3);
+        const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip.trip_id.includes(modifiedLiveTripId));
 
         if (gtfsTrip != null) {
             const trip: Trip = {

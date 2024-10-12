@@ -39,9 +39,13 @@ struct StopView: View {
                         .padding()
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
-                }
 
-                RouteDisplay(routes: stop.routes, size: .standard)
+                    RouteDisplay(routes: stop.routes, size: .small)
+                }
+                .padding(.bottom, -8)
+                .padding(.top, 6)
+
+                //RouteDisplay(routes: stop.routes, size: .standard)
 
                 switch viewModel.state {
                 case .initial:

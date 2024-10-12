@@ -13,14 +13,20 @@ export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
  * @param tripIds 
  * @returns an array of Trip objects.
  */
-export const getTripsByTripIds = async (tripIds: string[]): Promise<GTFSTrip[]> => {
-    const trips = await fetchAllTrips();
+export const getTripsByTripIds = async (liveTripIds: string[]): Promise<GTFSTrip[]> => {
+    const staticTrips = await fetchAllTrips();
     const filteredTrips: GTFSTrip[] = [];
 
-    trips.forEach(trip => {
-        tripIds.forEach(tripId => {
-            if (trip.trip_id.includes(tripId)) {
-                filteredTrips.push(trip);
+    staticTrips.forEach(staticTrip => {
+        liveTripIds.forEach(liveTripId => {
+            // If the GTFS Trip ID includes the live feed trip ID
+            // The last 3 chars of the realtime "..S" for example might not match what is in the GTFS.
+            // So chop off the last 3 and then match
+            // Also enusre the route matches too.
+            const modifiedLiveTripId = liveTripId.slice(0, -3);
+
+            if (staticTrip.trip_id.includes(modifiedLiveTripId) /*&& trip.route_id === route.gtfsRouteId*/) {
+                filteredTrips.push(staticTrip);
             }
         })
     });
