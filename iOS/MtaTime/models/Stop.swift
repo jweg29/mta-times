@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct Stop: Codable, Sendable, Equatable, Observable {
+final class Stop: Codable, Sendable, Equatable, ObservableObject {
     static func == (lhs: Stop, rhs: Stop) -> Bool {
-        return lhs.gtfsStopID == rhs.gtfsStopID
+        return lhs.gtfsStopId == rhs.gtfsStopId
     }
 
     let id: Int
-    let gtfsStopID: String
+    let gtfsStopId: String
     let name: String
     let lat: String
     let lon: String

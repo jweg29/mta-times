@@ -10,6 +10,12 @@ import Foundation
 @MainActor
 final class StopViewModel: ObservableObject {
 
+    enum State {
+        case initial
+        case loaded
+        case error(Error)
+    }
+
     enum DepartureFilter: Int {
         case all = 0
         case northBound = 1
@@ -18,6 +24,7 @@ final class StopViewModel: ObservableObject {
 
     @Published var stop: Stop
     @Published var departures: [Departure]
+    @Published var state: State = .initial
 
     func filteredDepartures(filter: DepartureFilter) -> [Departure] {
         switch filter {
@@ -47,10 +54,12 @@ final class StopViewModel: ObservableObject {
             let fetchedDepartures = try await NetworkService.shared.fetchDepartures(stop: stop)
             await MainActor.run {
                 self.departures = fetchedDepartures
+                state = .loaded
             }
         } catch {
             // Handle errors, e.g., update UI or show an alert
             print("Error fetching train times: \(error)")
+            state = .error(error)
         }
     }
 }

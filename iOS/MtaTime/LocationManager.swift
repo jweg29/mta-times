@@ -32,6 +32,10 @@ public final class LocationManager: NSObject, ObservableObject {
         locationManager.startUpdatingLocation()
     }
 
+    public func stopLocationUpdates() {
+        locationManager.stopUpdatingLocation()
+    }
+
     public func authStatus() -> CLAuthorizationStatus {
         return locationManager.authorizationStatus
     }

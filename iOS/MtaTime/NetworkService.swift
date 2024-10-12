@@ -31,11 +31,11 @@ enum Endpoint {
     var url: URL? {
         switch self {
         case .fetchStops:
-            URL(string: "\(Endpoint.host)/api/stops")
+            return URL(string: "\(Endpoint.host)/api/stops")
         case .fetchNearbyStops(let coordinate):
-            URL(string: "\(Endpoint.host)/api/stops?lat=\(coordinate.latitude)lon=\(coordinate.longitude)")
+            return URL(string: "\(Endpoint.host)/api/stops?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)")
         case .fetchDepartures(let stop):
-            URL(string: "\(Endpoint.host)/api/departures?stopId=\(stop.gtfsStopID)")
+            return URL(string: "\(Endpoint.host)/api/departures?stopId=\(stop.gtfsStopId)")
         }
     }
 }

@@ -14,8 +14,9 @@ struct MtaTimeApp: App {
 
     @StateObject private var locationManager = LocationManager.shared
 
-    var nearestStop: Stop?
-    let nearestStopViewModel = NearestStopViewModel()
+    //@StateObject var nearestStop: Stop?
+
+    @ObservedObject private var nearestStopViewModel = NearestStopViewModel()
 
     init() {
         //LocationManager.shared.delegate = self
@@ -25,7 +26,7 @@ struct MtaTimeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if let nearestStop {
+            if let nearestStop = nearestStopViewModel.nearestStop {
                 StopView(
                     stop: nearestStop
                 )

@@ -17,6 +17,7 @@ final class NearestStopViewModel: ObservableObject {
         didSet {
             Task {
                 await fetchNearbyStops()
+                LocationManager.shared.stopLocationUpdates()
             }
         }
     }

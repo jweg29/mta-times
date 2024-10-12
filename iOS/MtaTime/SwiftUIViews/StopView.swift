@@ -43,30 +43,54 @@ struct StopView: View {
 
                 RouteDisplay(routes: stop.routes, size: .standard)
 
-                List {
-                    Section {
-                        ForEach(
-                            viewModel.filteredDepartures(filter: departureFilter), id: \.id
-                        ) { departure in
-                            DepartureRow(departure: departure)
+                switch viewModel.state {
+                case .initial:
+                    List {
+                        Section {
+                        } header: {
+                            Text("Loading...")
+                            ProgressView()
+                                .progressViewStyle(.automatic)
                         }
-                    } header: {
-                        Picker("Route direction", selection: $selectedOption) {
-                            ForEach(0..<options.count) { index in
-                                Text(options[index]).tag(index)
+                    }
+                case .error(let error):
+                    Text(error.localizedDescription)
+                case .loaded:
+                    if viewModel.departures.isEmpty {
+                        List {
+                            Section {
+                            } header: {
+                                Text("No upcoming departures 😢")
+                            }
+                            .headerProminence(.increased)
+                        }
+                    } else {
+                        List {
+                            Section {
+                                ForEach(
+                                    viewModel.filteredDepartures(filter: departureFilter), id: \.id
+                                ) { departure in
+                                    DepartureRow(departure: departure)
+                                }
+                            } header: {
+                                Picker("Route direction", selection: $selectedOption) {
+                                    ForEach(0..<options.count) { index in
+                                        Text(options[index]).tag(index)
+                                    }
+                                }
+                                .tint(.blue)
+                                .pickerStyle(.segmented)
+                                .padding(.bottom, 8)
+                                .padding(.top, 8)
                             }
                         }
-                        .tint(.blue)
-                        .pickerStyle(.segmented)
-                        .padding(.bottom, 8)
-                        .padding(.top, 8)
+                        .animation(
+                            .default,
+                            value: viewModel.departures
+                        )
+                        .headerProminence(.increased)
                     }
                 }
-                .animation(
-                    .default,
-                    value: viewModel.departures
-                )
-                .headerProminence(.increased)
             }
         }
         .onAppear {
@@ -83,13 +107,13 @@ struct StopView: View {
             })
     }
 }
-
+/*
 #Preview {
     StopView(
         stop:
             Stop(
                 id: 0,
-                gtfsStopID: "",
+                gtfsStopId: "",
                 name: "W 4 St-Wash Sq",
                 lat: "",
                 lon: "",
@@ -143,3 +167,4 @@ struct StopView: View {
             )
     )
 }
+*/
