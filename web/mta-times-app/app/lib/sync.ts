@@ -166,6 +166,16 @@ export const syncGTFSData = async () => {
  * Downloads and updates the latest static GTFS files.
  */
 export const updateStaticGTFS = async (): Promise<NextResponse> => {
+    // first download the stations file
+    const stationsUrl = 'https://data.ny.gov/resource/39hk-dx4f.csv';
+    const stationsRespnose = await fetch(stationsUrl);
+    const arrayBuffer = await stationsRespnose.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer); // Convert to Uint8Array
+    const stationsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stations.csv');
+    fs.writeFileSync(stationsPath, buffer);
+
+    /// now handle the GTFS data
+
     const url = 'http://web.mta.info/developers/files/google_transit_supplemented.zip';
     const zipPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'google_transit_supplemented.zip');
     const extractPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS'); // Change this to your desired directory
