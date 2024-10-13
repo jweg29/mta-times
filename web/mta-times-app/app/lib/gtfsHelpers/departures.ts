@@ -34,7 +34,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
     const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
-    const gtfsTrips = await getTripsByTripIds(realtimeTripIds);
+    const routeIds = stop.routes.map(route => route.gtfsRouteId)
+    const gtfsTrips = await getTripsByTripIds(realtimeTripIds, routeIds);
 
     const routes = await fetchRoutes();
     const routeMap: Map<string, Route> = new Map();
@@ -42,9 +43,9 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         routeMap.set(route.gtfsRouteId, route)
     }
 
-    realtimeTripUpdates.forEach(realtimeTrip => {
+    for (const realtimeTrip of realtimeTripUpdates) {
         // live include stuff that doesn't match gtfs
-        const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.slice(0, -3);
+        const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
         const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip.trip_id.includes(modifiedLiveTripId));
 
         if (gtfsTrip != null) {
@@ -56,11 +57,23 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
                 route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
                 gtfsTrip: gtfsTrip,
             };
+            /*
+            const lastIndex = realtimeTrip.tripUpdate.stopTimeUpdate.length - 1
+            let lastStopName;
+            if (trip.gtfsTrip.direction_id === "0") {
+                lastStopName = (await getStopById(realtimeTrip.tripUpdate.stopTimeUpdate[lastIndex].stopId.slice(0, -1))).name
+            } else {
+                lastStopName = (await getStopById(realtimeTrip.tripUpdate.stopTimeUpdate[0].stopId.slice(0, -1))).name
+            }
+
+            trip.gtfsTrip.trip_headsign = lastStopName
+            */
+
             tripMap.set(realtimeTrip.tripUpdate.trip.tripId, trip);
         } else {
             console.log(`Could not find trip for ${realtimeTrip.tripUpdate.trip.tripId}`);
         }
-    });
+    }
 
     const departures: Departure[] = realtimeTripUpdates.flatMap(realtimeTrip => {
         // We need the trip and the stop time updates that are only relevant for our stopId.

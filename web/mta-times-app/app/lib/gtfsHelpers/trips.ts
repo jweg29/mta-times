@@ -13,19 +13,45 @@ export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
  * @param tripIds 
  * @returns an array of Trip objects.
  */
-export const getTripsByTripIds = async (liveTripIds: string[]): Promise<GTFSTrip[]> => {
+export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[]): Promise<GTFSTrip[]> => {
     const staticTrips = await fetchAllTrips();
     const filteredTrips: GTFSTrip[] = [];
+
+    // create a map from routeIds
+    const routeIdMap = new Map();
+    routeIds.forEach(routeId => {
+        routeIdMap.set(routeId, true);
+    });
 
     staticTrips.forEach(staticTrip => {
         liveTripIds.forEach(liveTripId => {
             // If the GTFS Trip ID includes the live feed trip ID
-            // The last 3 chars of the realtime "..S" for example might not match what is in the GTFS.
+            // 065300_G..S19X002 is an exampl live ID.
+            // The last chars of the realtime after the ".." for example might not match what is in the GTFS.
             // So chop off the last 3 and then match
-            // Also enusre the route matches too.
-            const modifiedLiveTripId = liveTripId.slice(0, -3);
+            // Also ensure the route and day matches too TODO.
+            const modifiedLiveTripId = liveTripId.split("..")[0];
 
-            if (staticTrip.trip_id.includes(modifiedLiveTripId) /*&& trip.route_id === route.gtfsRouteId*/) {
+            // if (staticTrip.trip_id.includes(modifiedLiveTripId)) {
+            //     routeIdMap.get(staticTrip.route_id)
+            //     if (routeIdMap[staticTrip.route_id]) {
+            //         //filteredTrips.push(staticTrip);
+            //     }
+            // }
+            /*const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+            let dayTypeString = ""
+            if (dayOfWeek === 0) {
+                dayTypeString = "Sunday";
+            } else if (dayOfWeek === 6) {
+                dayTypeString = "Saturday";
+            } else {
+                dayTypeString = "Weekday";
+            }*/
+
+            if (staticTrip.trip_id.includes(modifiedLiveTripId) &&
+                routeIdMap.get(staticTrip.route_id) /*&&
+                staticTrip.service_id.includes(dayTypeString)*/) {
                 filteredTrips.push(staticTrip);
             }
         })
