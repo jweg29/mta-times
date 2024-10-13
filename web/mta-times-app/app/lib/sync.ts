@@ -166,8 +166,8 @@ export const syncGTFSData = async () => {
  * Downloads and updates the latest static GTFS files.
  */
 export const updateStaticGTFS = async (): Promise<NextResponse> => {
-    const url = 'http://web.mta.info/developers/data/nyct/subway/google_transit.zip';
-    const zipPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'google_transit.zip');
+    const url = 'http://web.mta.info/developers/files/google_transit_supplemented.zip';
+    const zipPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'google_transit_supplemented.zip');
     const extractPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS'); // Change this to your desired directory
 
     try {

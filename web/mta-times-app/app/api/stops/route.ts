@@ -9,8 +9,10 @@ export async function GET(request: NextRequest) {
 
         let stops: Stop & { stop: Route[] }[]
         if (lat != undefined && lon != undefined) {
+            console.log(`/api/stops fetchStopByLatLon`)
             stops = await fetchStopByLatLon(Number(lat), Number(lon)) as unknown as Stop & { stop: Route[] }[];
         } else {
+            console.log(`/api/stops fetchStops`)
             stops = await fetchStops() as unknown as Stop & { stop: Route[] }[];
         }
 
