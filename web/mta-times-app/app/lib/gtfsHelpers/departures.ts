@@ -71,7 +71,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
             tripMap.set(realtimeTrip.tripUpdate.trip.tripId, trip);
         } else {
-            console.log(`Could not find trip for ${realtimeTrip.tripUpdate.trip.tripId}`);
+            console.warn(`Could not find trip for: ${realtimeTrip.tripUpdate.trip.tripId}`);
         }
     }
 
