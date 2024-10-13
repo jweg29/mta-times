@@ -42,7 +42,7 @@ struct StopView: View {
 
                     RouteDisplay(routes: stop.routes, size: .small)
                 }
-                .padding(.bottom, -8)
+                .padding(.bottom, -14)
                 .padding(.top, 6)
 
                 //RouteDisplay(routes: stop.routes, size: .standard)
@@ -52,10 +52,15 @@ struct StopView: View {
                     List {
                         Section {
                         } header: {
-                            Text("Loading...")
-                            ProgressView()
-                                .progressViewStyle(.automatic)
+                            HStack() {
+                                Spacer()
+                                Text("Loading...")
+                                ProgressView()
+                                    .progressViewStyle(.automatic)
+                                Spacer()
+                            }
                         }
+                        .headerProminence(.increased)
                     }
                 case .error(let error):
                     Text(error.localizedDescription)
@@ -84,8 +89,8 @@ struct StopView: View {
                                 }
                                 .tint(.blue)
                                 .pickerStyle(.segmented)
-                                .padding(.bottom, 8)
-                                .padding(.top, 8)
+                                .padding(.bottom, 0)
+                                .padding(.top, 2)
                             }
                         }
                         .animation(

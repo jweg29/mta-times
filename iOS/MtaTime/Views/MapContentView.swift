@@ -92,7 +92,7 @@ struct MapContentView: View {
         }
         .safeAreaPadding(.bottom, 190)  // Adjust the bottom safe area so the legal Maps text isn't hidden.
         .sheet(isPresented: $isSheetPresented) {
-            MapPopOverView(selectedDetent: .fraction(0.33), selectedStop: $selectedStop)
+            MapPopOverView(selectedDetent: .fraction(0.33), selectedStop: selectedStop)
                 .presentationBackground(.thinMaterial)  // set the background of the sheet
         }
         .onChange(of: nearestStopViewModel.nearestStops) { nearestStops in
@@ -105,9 +105,11 @@ struct MapPopOverView: View {
 
     @State private var searchText = ""
     @State private var searchIsActive = false
-    @State var selectedDetent: PresentationDetent
+    //@State var selectedDetent: PresentationDetent
+    var selectedDetent: PresentationDetent
 
-    @Binding var selectedStop: Stop?
+    var selectedStop: Stop?
+    //@Binding var selectedStop: Stop?
 
     var body: some View {
         VStack {
@@ -116,10 +118,12 @@ struct MapPopOverView: View {
             } else {
                 ProgressView()
                     .progressViewStyle(.automatic)
+                    .controlSize(.large)
+                    .tint(Color(Colors.mtaColor))
             }
         }
         .interactiveDismissDisabled()
-        .presentationDetents([.fraction(0.33), .medium, .large], selection: $selectedDetent)
+        .presentationDetents([.fraction(0.40), .medium, .large])//, selection: selectedDetent)
         .presentationBackgroundInteraction(.enabled)
         .presentationContentInteraction(.resizes)
     }

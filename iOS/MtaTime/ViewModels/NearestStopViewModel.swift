@@ -45,7 +45,7 @@ final class NearestStopViewModel: ObservableObject {
 extension NearestStopViewModel: @preconcurrency LocationManagerDeleate {
 
     func didUpdateLocations(_ locations: [CLLocation]) {
-        if userLocation == nil, let newLocation = locations.last {
+        if /*userLocation == nil,*/ let newLocation = locations.last {
             userLocation = newLocation.coordinate
         }
     }

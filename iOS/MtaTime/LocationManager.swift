@@ -29,6 +29,7 @@ public final class LocationManager: NSObject, ObservableObject {
     }
 
     public func startLocationUpdates() {
+        locationManager.distanceFilter = 804
         locationManager.startUpdatingLocation()
     }
 
