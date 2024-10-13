@@ -10,8 +10,8 @@ datasource db {
 }
 
 model Stop {
-    id                  Int     @id @default(autoincrement())
-    gtfsStopId          String  @unique
+    id                  Int            @id @default(autoincrement())
+    gtfsStopId          String         @unique
     name                String
     lat                 String
     lon                 String
@@ -21,11 +21,12 @@ model Stop {
     adaNotes            String
     locationType        String
     parentStation       String
-    routes              Route[] @relation("StopRoutes")
+    routes              Route[]        @relation("StopRoutes")
+    entrances           StopEntrance[] // This represents a one-to-many relationship with Entrance
 }
 
 model Route {
-    id               Int    @id @default(autoincrement())
+    id               Int     @id @default(autoincrement())
     gtfsRouteId      String
     agencyId         String
     shortName        String
@@ -36,5 +37,18 @@ model Route {
     color            String
     textColor        String
     liveFeedURL      String
-    stops            Stop[] @relation("StopRoutes")
+    shouldDisplay    Boolean @default(true)
+    groupOrder       Int     @default(0)
+    stops            Stop[]  @relation("StopRoutes")
+}
+
+model StopEntrance {
+    id           Int     @id @default(autoincrement())
+    lat          String
+    lon          String
+    type         String
+    entryAllowed Boolean
+    exitAllowed  Boolean
+    Stop         Stop?   @relation(fields: [stopId], references: [id])
+    stopId       Int?
 }

@@ -48,7 +48,7 @@ struct DepartureRow: View {
                             url: "",
                             color: "#2850AD",
                             textColor: "",
-                            liveFeedURL: ""),
+                            liveFeedURL: "", shouldDisplay: true),
                        gtfsTrip:
                         GTFSTrip(routeId: "",
                                  tripId: "",

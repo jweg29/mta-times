@@ -15,7 +15,9 @@ struct RouteDisplay: View {
     var body: some View {
         HStack {
             ForEach(routes) { route in
-                RouteCircleView(route: route, size: size)
+                if (route.shouldDisplay) {
+                    RouteCircleView(route: route, size: size)
+                }
             }
         }
     }
@@ -34,7 +36,7 @@ struct RouteDisplay: View {
             url: "",
             color: "#2850AD",
             textColor: "",
-            liveFeedURL: ""),
+            liveFeedURL: "", shouldDisplay: true),
         Route(
             id: 1,
             gtfsRouteId: "A",
@@ -46,7 +48,7 @@ struct RouteDisplay: View {
             url: "",
             color: "#2850AD",
             textColor: "",
-            liveFeedURL: ""),
+            liveFeedURL: "", shouldDisplay: true),
         Route(
             id: 2,
             gtfsRouteId: "",
@@ -58,7 +60,7 @@ struct RouteDisplay: View {
             url: "",
             color: "#2850AD",
             textColor: "",
-            liveFeedURL: ""),
+            liveFeedURL: "", shouldDisplay: true),
     ],
                  size: .standard)
 }

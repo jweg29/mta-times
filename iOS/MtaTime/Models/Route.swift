@@ -20,9 +20,14 @@ struct Route: Codable, Identifiable {
     let color: String
     let textColor: String
     let liveFeedURL: String
+    let shouldDisplay: Bool
 
     var routeColor: UIColor {
         return UIColor(hex: color)
+    }
+
+    var routeTextColor: UIColor {
+        return UIColor(hex: textColor)
     }
 }
 

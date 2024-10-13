@@ -60,7 +60,7 @@ struct RouteCircleView: View {
                 .frame(minWidth: circleSize.width, maxWidth: circleSize.width, minHeight: circleSize.width, maxHeight:circleSize.width)
                 .clipShape(Circle())
             Text(title)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(Color(route.routeTextColor))
                 .font(font)
                 .fontWeight(.bold)
         }
@@ -80,7 +80,7 @@ struct RouteCircleView: View {
             url: "",
             color: "#2850AD",
             textColor: "",
-            liveFeedURL: ""),
+            liveFeedURL: "", shouldDisplay: true),
         size: .small)
 }
 

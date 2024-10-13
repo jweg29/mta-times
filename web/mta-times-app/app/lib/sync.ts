@@ -20,14 +20,14 @@ export const syncGTFSData = async () => {
     const stationsMap = new Map<string, CSVStation>();
     const stations: CSVStation[] = parsedStations.map((data) => {
         const station: CSVStation = {
-            stopId: data["GTFS Stop ID"],
-            northDirectionLabel: data["North Direction Label"],
-            southDirectionLabel: data["South Direction Label"],
-            division: data["Division"],
-            line: data["Line"],
-            stopName: data["Stop Name"],
-            ada: data["ADA"],
-            adaNotes: data["ADA Notes"]
+            stopId: data["gtfs_stop_id"],
+            northDirectionLabel: data["north_direction_label"],
+            southDirectionLabel: data["south_direction_label"],
+            division: data["division"],
+            line: data["line"],
+            stopName: data["stop_name"],
+            ada: data["ada"],
+            adaNotes: data["ada_notes"]
         };
 
         stationsMap.set(station.stopId, station);
@@ -47,7 +47,7 @@ export const syncGTFSData = async () => {
             stop.adaNotes = station.adaNotes;
         } else {
             // This happens for some reason so just set a default text and log it.
-            console.error(`Unable to map station to GTFS stop. GTFS ID: ${stop.gtfsStop.stop_id}`)
+            console.error(`Unable to map GTFS Stop to station. GTFS ID: ${stop.gtfsStop.stop_id}`)
             stop.northDirectionLabel = "";
             stop.southDirectionLabel = "";
             stop.ada = "";
@@ -86,6 +86,41 @@ export const syncGTFSData = async () => {
     const routeGTFSIdMap = new Map<string, number>()
 
     for (const route of routes) {
+        let textColor: string = "#FFFFFF"
+
+        // NQRW has black text
+        if (route.gtfsRoute.route_id.charAt(0) == "N" || route.gtfsRoute.route_id.charAt(0) == "Q" || route.gtfsRoute.route_id.charAt(0) == "R" || route.gtfsRoute.route_id.charAt(0) == "W") {
+            textColor = "#000000"
+        }
+
+        // Set route group ordering:
+        // 1,2,3 = 0
+        // 4,5,6 = 1
+        // 7 = 2
+        // ACE = 3
+        // BDFM = 4
+        // G = 5
+        // JZ = 6
+        // NQRW = 7
+        // L = 8
+
+        let groupOrder = 0;
+        if (route.gtfsRoute.route_id == "1" || route.gtfsRoute.route_id == "2" || route.gtfsRoute.route_id == "3") {
+            groupOrder = 0
+        } else if (route.gtfsRoute.route_id == "4" || route.gtfsRoute.route_id == "5" || route.gtfsRoute.route_id == "6") {
+            groupOrder = 1
+        } else if (route.gtfsRoute.route_id == "7") {
+            groupOrder = 2
+        } else if (route.gtfsRoute.route_id == "A" || route.gtfsRoute.route_id == "C" || route.gtfsRoute.route_id == "E") {
+            groupOrder = 4
+        } else if (route.gtfsRoute.route_id == "B" || route.gtfsRoute.route_id == "D" || route.gtfsRoute.route_id == "F" || route.gtfsRoute.route_id == "M") {
+            groupOrder = 5
+        } else if (route.gtfsRoute.route_id == "J" || route.gtfsRoute.route_id == "Z") {
+            groupOrder = 6
+        } else if (route.gtfsRoute.route_id == "N" || route.gtfsRoute.route_id == "Q" || route.gtfsRoute.route_id == "R" || route.gtfsRoute.route_id == "W") {
+            groupOrder = 7
+        }
+
         try {
             const createdRoute = await prisma.route.create({
                 data: {
@@ -97,8 +132,10 @@ export const syncGTFSData = async () => {
                     routeDescription: route.gtfsRoute.route_desc,
                     url: route.gtfsRoute.route_url,
                     color: route.gtfsRoute.route_color,
-                    textColor: route.gtfsRoute.route_text_color,
+                    textColor: textColor,
                     liveFeedURL: route.liveFeedUrl,
+                    shouldDisplay: route.gtfsRoute.route_id.charAt(route.gtfsRoute.route_id.length - 1) != "X",
+                    groupOrder: groupOrder
                 },
             })
             routeGTFSIdMap.set(route.gtfsRoute.route_id, createdRoute.id)
@@ -109,6 +146,11 @@ export const syncGTFSData = async () => {
             throw error;
         }
     }
+
+    // Make Route modifications
+
+    // if ends in X then don't display
+
 
     console.log(`Finished creating routes ✅`);
 
@@ -154,7 +196,6 @@ export const syncGTFSData = async () => {
     console.log(`Finished creating stops ✅`)
 
     // Setup StopTimes
-
 
     // Setup Trips
 
