@@ -79,7 +79,6 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         // We need the trip and the stop time updates that are only relevant for our stopId.
         const trip = tripMap.get(realtimeTrip.tripUpdate.trip.tripId);
         if (trip == null) {
-            console.log(`Could not find trip for ${realtimeTrip.tripUpdate.trip.tripId}`);
             return [];
         }
 
