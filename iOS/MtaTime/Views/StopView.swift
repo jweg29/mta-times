@@ -54,9 +54,11 @@ struct StopView: View {
                         } header: {
                             HStack() {
                                 Spacer()
-                                Text("Loading...")
+                                //Text("Loading...")
                                 ProgressView()
                                     .progressViewStyle(.automatic)
+                                    .controlSize(.large)
+                                    .tint(Color(Colors.mtaColor))
                                 Spacer()
                             }
                         }
