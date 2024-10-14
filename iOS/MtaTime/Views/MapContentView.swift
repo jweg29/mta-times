@@ -24,6 +24,14 @@ struct MapContentView: View {
         }
     }
 
+    var stopEntrances: [StopEntrance] {
+        let allEntrances = nearestStopViewModel.nearestStops?.flatMap({ stop in
+            return stop.entrances ?? []
+        })
+
+        return allEntrances ?? []
+    }
+
     @State private var selectedStop:
         Stop? /* {
         if let selectedItem {
@@ -51,31 +59,29 @@ struct MapContentView: View {
                 selection: $selectedItem,
                 content: {
                     UserAnnotation()
-                    ForEach(nearestStopViewModel.nearestStops ?? [], id: \.gtfsStopId) { stop in
+
+                    ForEach(nearestStopViewModel.nearestStops ?? []) { stop in
                         Annotation(stop.name, coordinate: stop.coordinate) {
-                            Button(action: {
-                                selectedStop = stop
-                            }) {
-                                ZStack {
-                                    // Background layer
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.ultraThinMaterial)
-                                        //.presentationBackground(.thinMaterial)  // set the background of the sheet
-                                        .frame(width: /*40*/ (Double(stop.routes.count) * 40), height: 40)
-                                        .shadow(radius: 5)
+                            StopAnnotationView(stop: stop, selectedStop: $selectedStop)
+                                .zIndex(100)
+                        }
+                    }
 
-                                    VStack {
-                                        /*Image(systemName: "tram.circle.fill")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundColor(Color(Colors.mtaColor))*/
-
-                                        RouteDisplay(routes: stop.routes, size: .verySmall)
-                                    }
-                                }
+                    if let selectedStop {
+                        ForEach(selectedStop.entrances ?? []) { entrance in
+                            Annotation("", coordinate: entrance.coordinate) {
+                                EntranceAnnotationView(entrance: entrance)
+                                    .zIndex(-1)
                             }
                         }
                     }
+
+                    /*ForEach(stopEntrances) { entrance in
+                        Annotation("", coordinate: entrance.coordinate) {
+                            EntranceAnnotationView(entrance: entrance)
+                                .zIndex(-1)
+                        }
+                    }*/
                 }
             )
             .mapControls {
@@ -101,6 +107,77 @@ struct MapContentView: View {
     }
 }
 
+struct StopAnnotationView: View {
+
+    let stop: Stop
+    @Binding var selectedStop: Stop?
+
+    var body: some View {
+        Button(action: {
+            selectedStop = stop
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.ultraThinMaterial)
+                    .frame(width: /*40*/ (Double(stop.routes.count) * 40), height: 40)
+                    .shadow(radius: 5)
+
+                VStack {
+                    RouteDisplay(routes: stop.routes, size: .verySmall)
+                }
+            }
+        }
+    }
+}
+
+struct EntranceAnnotationView: View {
+
+    @State var entrance: StopEntrance
+
+    var imageName: String {
+        switch entrance.entranceType {
+        case .Elevator:
+            return "door.sliding.right.hand.closed"
+        default:
+            return "figure.stairs.circle"
+        }
+    }
+
+    var body: some View {
+        ZStack {
+            // Background layer
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.ultraThickMaterial)
+                .frame(width: 40, height: 40)
+                .shadow(radius: 5)
+            VStack {
+                /*
+                 "figure.stairs"
+                 "figure.stairs.circle"
+                 "figure.stairs.circle.fill"
+
+                 figure.walk.departure
+                 figure.walk.arrival
+
+                 figure.run
+                 figure.run.circle
+
+                 door.sliding.right.hand.closed
+                 */
+                
+                Image(systemName: imageName)//"figure.run.circle")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.green)
+            }
+        }
+    }
+
+    //@State var stop: Stop
+    //ForEach(stop.entrances ?? [], id: \.id) { entrance in
+    //}
+}
+
 struct MapPopOverView: View {
 
     @State private var searchText = ""
@@ -123,11 +200,12 @@ struct MapPopOverView: View {
             }
         }
         .interactiveDismissDisabled()
-        .presentationDetents([.fraction(0.40), .medium, .large])//, selection: selectedDetent)
+        .presentationDetents([.fraction(0.40), .medium, .large])  //, selection: selectedDetent)
         .presentationBackgroundInteraction(.enabled)
         .presentationContentInteraction(.resizes)
     }
 }
+
 /*
 #Preview {
     MapContentView(

@@ -9,7 +9,7 @@ import CoreLocation
 import Foundation
 import SwiftUI
 
-final class Stop: Codable, Sendable, Equatable, ObservableObject {
+final class Stop: Codable, Sendable, Equatable, ObservableObject, Identifiable {
     static func == (lhs: Stop, rhs: Stop) -> Bool {
         return lhs.gtfsStopId == rhs.gtfsStopId
     }
@@ -54,7 +54,15 @@ final class Stop: Codable, Sendable, Equatable, ObservableObject {
     }
 }
 
-final class StopEntrance: Codable, Equatable, Sendable {
+final class StopEntrance: Codable, Equatable, Sendable, Identifiable {
+    enum EntranceType: String {
+        case Elevator
+        case Stair
+        case EasementStreet
+        case EasementPassage
+        case StationHouse
+    }
+
     static func == (lhs: StopEntrance, rhs: StopEntrance) -> Bool {
         lhs.id == rhs.id
     }
@@ -65,6 +73,19 @@ final class StopEntrance: Codable, Equatable, Sendable {
     let type: String
     let entryAllowed: Bool
     let exitAllowed: Bool
+
+    var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(
+            latitude: CLLocationDegrees(lat) ?? .zero, longitude: CLLocationDegrees(lon) ?? .zero)
+    }
+
+    var entranceType: EntranceType {
+        if let entranceEnum = EntranceType(rawValue: type) {
+            return entranceEnum
+        } else {
+            return .Stair
+        }
+    }
 }
 
 /*model StopEntrance {
