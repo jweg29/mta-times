@@ -4,8 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const lat = request.nextUrl.searchParams.get("lat") as string;
-        const lon = request.nextUrl.searchParams.get("lon") as string;
+        let lat = undefined;
+        let lon = undefined;
+        if (request.nextUrl.searchParams != undefined) {
+            lat = request.nextUrl.searchParams.get("lat") as string;
+            lon = request.nextUrl.searchParams.get("lon") as string;
+        }
 
         let stops: (Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>)[]
         if (lat != undefined && lon != undefined) {

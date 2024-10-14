@@ -2,6 +2,15 @@ import { fetchDeparturesForStop } from 'lib/gtfsHelpers/departures';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
+    if (request.nextUrl.searchParams == undefined) {
+        return NextResponse.json(
+            { error: 'Missing parameters' },
+            {
+                status: 400,
+            }
+        );
+    }
+
     const stopId = request.nextUrl.searchParams.get("stopId");
 
     if (typeof stopId !== 'string') {
