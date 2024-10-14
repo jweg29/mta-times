@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 const GtfsRealtimeBindings = require('gtfs-realtime-bindings').transit_realtime;
 const { FeedMessage, FeedHeader, FeedEntity, VehiclePosition } = GtfsRealtimeBindings;
+export const dynamic = 'force-dynamic' // defaults to auto
 
 export default async function handler(
   request: NextApiRequest,

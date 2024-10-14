@@ -1,6 +1,7 @@
 import { Stop } from '@prisma/client';
 import { fetchStops } from 'lib/gtfsHelpers/stops';
 import type { NextApiRequest, NextApiResponse } from 'next';
+export const dynamic = 'force-dynamic' // defaults to auto
 
 export default async function handler(
   request: NextApiRequest,
