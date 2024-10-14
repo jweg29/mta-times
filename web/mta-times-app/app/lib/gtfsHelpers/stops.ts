@@ -55,7 +55,7 @@ export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prism
         }))
         .sort((a, b) => a.distance - b.distance)
         .slice(0, 10)
-        .map((item) => item.stop as unknown as (Stop & { stop: Route[] })); // Type assertion to ensure TypeScript understands this is a Stop object
+        .map((item) => item.stop as unknown as (Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>)); // Type assertion to ensure TypeScript understands this is a Stop object
 }
 
 export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
