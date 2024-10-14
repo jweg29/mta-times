@@ -12,11 +12,17 @@ import SwiftUI
 
 enum NetworkError: LocalizedError {
     case invalidURL
+    case serverError(Int)
+    case invalidResponse
 
     var errorDescription: String? {
         switch self {
         case .invalidURL:
             return "Invalid URL"
+        case .serverError(let code):
+            return "The server encountered an error. Status code: \(code)"
+        case .invalidResponse:
+            return "No server response."
         }
     }
 }
@@ -126,7 +132,15 @@ public final class NetworkService: NSObject, Sendable {
             throw NetworkError.invalidURL
         }
 
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await URLSession.shared.data(from: url)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.invalidResponse
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
 
         let decoder = JSONDecoder()
         return try decoder.decode([Departure].self, from: data)
