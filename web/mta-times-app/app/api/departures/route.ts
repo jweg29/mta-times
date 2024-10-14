@@ -13,16 +13,17 @@ export async function GET(request: NextRequest) {
 
     const stopId = request.nextUrl.searchParams.get("stopId");
 
-    if (typeof stopId !== 'string') {
+    if (stopId == undefined || typeof stopId !== 'string') {
         return NextResponse.json(
             { error: 'Invalid stop ID' },
             { status: 400 }
         );
     }
 
-    const upcomingDepartures = await fetchDeparturesForStop(stopId);
-
     try {
+
+        const upcomingDepartures = await fetchDeparturesForStop(stopId);
+
         return NextResponse.json(
             upcomingDepartures,
             {
