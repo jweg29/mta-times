@@ -1,9 +1,10 @@
+import { StopEntrance } from '@prisma/client';
 import AdmZip from 'adm-zip';
 import fs from 'fs';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 import path from 'path';
-import { CSVStation } from './definitions';
+import { CSVStation, EntranceData } from './definitions';
 import { loadRoutesFromStaticFiles } from './gtfsHelpers/routes';
 import { loadStopsFromStaticFiles } from './gtfsHelpers/stops';
 import prisma from './prisma';
@@ -33,6 +34,50 @@ export const syncGTFSData = async () => {
         stationsMap.set(station.stopId, station);
         return station;
     });
+
+    // Entrance data
+    //const fetchedEntrances = await prisma.stopEntrance.findMany();
+    await prisma.stopEntrance.deleteMany({});
+
+    const entrancePath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'entrances.csv');
+    const parsedEntrances = parseCSV(entrancePath);
+
+    const entranceMap = new Map<string, EntranceData>();
+    const entrances: EntranceData[] = parsedEntrances.map((data) => {
+        const entranceData: EntranceData = {
+            gtfsStopId: data["GTFS Stop ID"],
+            lat: data["Entrance Latitude"],
+            lon: data["Entrance Longitude"],
+            type: data["Entrance Type"],
+            entryAllowed: data["Entry Allowed"],
+            exitAllowed: data["Exit Allowed"],
+        };
+        entranceMap.set(entranceData.gtfsStopId, entranceData);
+        return entranceData;
+    });
+
+    let createdEntrances: StopEntrance[] = []
+    for (const entranceData of entrances) {
+        const createdEntrance = await prisma.stopEntrance.create({
+            data: {
+                gtfsStopId: entranceData.gtfsStopId,
+                lat: entranceData.lat,
+                lon: entranceData.lon,
+                type: entranceData.type,
+                entryAllowed: Boolean(entranceData.entryAllowed),
+                exitAllowed: Boolean(entranceData.exitAllowed)
+            }
+        });
+
+        if (createdEntrance != undefined) {
+            createdEntrances.push(createdEntrance);
+            console.log(`Created StopEntrance for entrance with stop id: ${entranceData.gtfsStopId}`)
+        } else {
+            console.error(`Unable to create StopEntrance for entrance with stop id: ${entranceData.gtfsStopId}`)
+        }
+    }
+
+    console.log(`Finished creating stop entrances ✅`)
 
     // Setup Stops
 
@@ -161,12 +206,27 @@ export const syncGTFSData = async () => {
         throw Error('Unable to parse and load static GTFS stops.')
     }
 
+    /*const entranceServiceIds = createdEntrances.map(entrance => {
+               return { id: entrance.id }
+           })*/
+    /*const entranceServiceIds = fetchedEntrances.map(entrance => {
+        return { id: entrance.id }
+    })*/
+
+
     for (const stop of stops) {
         try {
             const routeServerIds = stop.routes.map(route => {
                 const serverId = routeGTFSIdMap.get(route.gtfsRoute.route_id)
                 return { id: serverId }
             })
+
+
+            const stopEntranceIds = createdEntrances.filter(entrance => {
+                return entrance.gtfsStopId == stop.gtfsStop.stop_id
+            }).map(entrance => {
+                return { id: entrance.id }
+            });
 
             const createdStop = await prisma.stop.create({
                 data: {
@@ -182,10 +242,12 @@ export const syncGTFSData = async () => {
                     parentStation: stop.gtfsStop.parent_station,
                     routes: {
                         connect: routeServerIds
-                    }
-                },
+                    },
+                    entrances: {
+                        connect: stopEntranceIds
+                    },
+                }
             })
-
             console.log(`Created stop with ID: ${createdStop.id}`)
         } catch (error) {
             console.error(`Error creating database for stop: ${stop}`, error);

@@ -49,6 +49,7 @@ model StopEntrance {
     type         String
     entryAllowed Boolean
     exitAllowed  Boolean
-    Stop         Stop?   @relation(fields: [stopId], references: [id])
+    gtfsStopId   String
+    stop         Stop?   @relation(fields: [stopId], references: [id])
     stopId       Int?
 }

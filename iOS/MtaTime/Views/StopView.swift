@@ -45,63 +45,57 @@ struct StopView: View {
                 .padding(.bottom, -14)
                 .padding(.top, 6)
 
-                //RouteDisplay(routes: stop.routes, size: .standard)
-
-                switch viewModel.state {
-                case .initial:
-                    List {
-                        Section {
-                        } header: {
-                            HStack() {
+                List {
+                    Section {
+                        switch viewModel.state {
+                        case .error(let error):
+                            Text(error.localizedDescription)
+                                .padding()
+                                .multilineTextAlignment(.center)
+                        case .initial:
+                            HStack {
                                 Spacer()
-                                //Text("Loading...")
                                 ProgressView()
                                     .progressViewStyle(.automatic)
                                     .controlSize(.large)
                                     .tint(Color(Colors.mtaColor))
                                 Spacer()
                             }
-                        }
-                        .headerProminence(.increased)
-                    }
-                case .error(let error):
-                    Text(error.localizedDescription)
-                case .loaded:
-                    if viewModel.departures.isEmpty {
-                        List {
-                            Section {
-                            } header: {
-                                Text("No upcoming departures 😢")
-                            }
-                            .headerProminence(.increased)
-                        }
-                    } else {
-                        List {
-                            Section {
+                        case .loaded:
+                            if viewModel.departures.isEmpty {
+                                List {
+                                    Section {
+                                    } header: {
+                                        Text("No upcoming departures 😢")
+                                    }
+                                    .headerProminence(.increased)
+                                }
+                            } else {
                                 ForEach(
                                     viewModel.filteredDepartures(filter: departureFilter), id: \.id
                                 ) { departure in
                                     DepartureRow(departure: departure)
                                 }
-                            } header: {
-                                Picker("Route direction", selection: $selectedOption) {
-                                    ForEach(0..<options.count) { index in
-                                        Text(options[index]).tag(index)
-                                    }
-                                }
-                                .tint(.blue)
-                                .pickerStyle(.segmented)
-                                .padding(.bottom, 0)
-                                .padding(.top, 2)
                             }
                         }
-                        .animation(
-                            .default,
-                            value: viewModel.departures
-                        )
-                        .headerProminence(.increased)
+
+                    } header: {
+                        Picker("Route direction", selection: $selectedOption) {
+                            ForEach(0..<options.count) { index in
+                                Text(options[index]).tag(index)
+                            }
+                        }
+                        .tint(.blue)
+                        .pickerStyle(.segmented)
+                        .padding(.bottom, 0)
+                        .padding(.top, 2)
                     }
                 }
+                .animation(
+                    .default,
+                    value: viewModel.departures
+                )
+                .headerProminence(.increased)
             }
         }
         .onAppear {

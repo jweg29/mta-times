@@ -1,4 +1,4 @@
-import { Route, Stop } from '@prisma/client';
+import { Prisma, Route, Stop } from '@prisma/client';
 import prisma from 'lib/prisma';
 import path from 'path';
 import { GTFSStop, GTFSTrip, RouteData, StopData, StopTime } from '../definitions';
@@ -6,10 +6,11 @@ import { parseCSV } from '../utils';
 import { loadRoutesFromStaticFiles } from './routes';
 import { fetchAllTrips } from './trips';
 
-export const fetchStops = async (): Promise<(Stop & { routes: Route[] })[]> => {
+export const fetchStops = async (): Promise<Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>[]> => {
     const stops = await prisma.stop.findMany({
         include: {
             routes: true,
+            entrances: true,
         },
         orderBy: {
             name: 'asc',
@@ -24,7 +25,7 @@ export const fetchStops = async (): Promise<(Stop & { routes: Route[] })[]> => {
  * @param lon 
  * @returns The 10 closest stops from the given lat lon.
  */
-export const fetchStopByLatLon = async (lat: number, lon: number): Promise<(Stop & { stop: Route[] })[]> => {
+export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>[]> => {
     const stops = await fetchStops();
 
     // Radius of the Earth in kilometers

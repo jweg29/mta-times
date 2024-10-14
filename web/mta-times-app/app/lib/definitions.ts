@@ -119,3 +119,12 @@ export enum LiveFeedUrl {
   OneTwoThreeFourFiveSixSeven = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs",
   SIR = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si",
 }
+
+export interface EntranceData {
+  gtfsStopId: string;
+  lat: string;
+  lon: string;
+  type: string;
+  entryAllowed: string;
+  exitAllowed: string;
+}

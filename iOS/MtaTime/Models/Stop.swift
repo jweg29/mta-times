@@ -26,6 +26,7 @@ final class Stop: Codable, Sendable, Equatable, ObservableObject {
     let locationType: String
     let parentStation: String
     let routes: [Route]
+    let entrances: [StopEntrance]?
 
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(
@@ -35,7 +36,7 @@ final class Stop: Codable, Sendable, Equatable, ObservableObject {
     init(
         id: Int, gtfsStopId: String, name: String, lat: String, lon: String, northDirectionLabel: String,
         southDirectionLabel: String, ada: String, adaNotes: String, locationType: String, parentStation: String,
-        routes: [Route]
+        routes: [Route], entrances: [StopEntrance]? = nil
     ) {
         self.id = id
         self.gtfsStopId = gtfsStopId
@@ -49,5 +50,30 @@ final class Stop: Codable, Sendable, Equatable, ObservableObject {
         self.locationType = locationType
         self.parentStation = parentStation
         self.routes = routes
+        self.entrances = entrances
     }
 }
+
+final class StopEntrance: Codable, Equatable, Sendable {
+    static func == (lhs: StopEntrance, rhs: StopEntrance) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    let id: Int
+    let lat: String
+    let lon: String
+    let type: String
+    let entryAllowed: Bool
+    let exitAllowed: Bool
+}
+
+/*model StopEntrance {
+    id           Int     @id @default(autoincrement())
+    lat          String
+    lon          String
+    type         String
+    entryAllowed Boolean
+    exitAllowed  Boolean
+    subwayStop   Stop?   @relation(fields: [StopId], references: [id])
+    StopId       Int?
+}*/
