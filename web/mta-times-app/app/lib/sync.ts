@@ -36,7 +36,6 @@ export const syncGTFSData = async () => {
     });
 
     // Entrance data
-    //const fetchedEntrances = await prisma.stopEntrance.findMany();
     await prisma.stopEntrance.deleteMany({});
 
     const entrancePath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'entrances.csv');
