@@ -29,8 +29,23 @@ CREATE TABLE "Route" (
     "textColor" TEXT NOT NULL,
     "liveFeedURL" TEXT NOT NULL,
     "shouldDisplay" BOOLEAN NOT NULL DEFAULT true,
+    "groupOrder" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Route_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StopEntrance" (
+    "id" SERIAL NOT NULL,
+    "lat" TEXT NOT NULL,
+    "lon" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "entryAllowed" BOOLEAN NOT NULL,
+    "exitAllowed" BOOLEAN NOT NULL,
+    "gtfsStopId" TEXT NOT NULL,
+    "stopId" INTEGER,
+
+    CONSTRAINT "StopEntrance_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -47,6 +62,9 @@ CREATE UNIQUE INDEX "_StopRoutes_AB_unique" ON "_StopRoutes"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_StopRoutes_B_index" ON "_StopRoutes"("B");
+
+-- AddForeignKey
+ALTER TABLE "StopEntrance" ADD CONSTRAINT "StopEntrance_stopId_fkey" FOREIGN KEY ("stopId") REFERENCES "Stop"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_StopRoutes" ADD CONSTRAINT "_StopRoutes_A_fkey" FOREIGN KEY ("A") REFERENCES "Route"("id") ON DELETE CASCADE ON UPDATE CASCADE;
