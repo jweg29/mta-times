@@ -28,6 +28,8 @@ export const fetchStops = async (): Promise<Prisma.StopGetPayload<{ include: { e
 export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>[]> => {
     const stops = await fetchStops();
 
+    console.log(`fetched ${stops.length} stops`);
+
     // Radius of the Earth in kilometers
     const earthRadiusKm = 6371;
 

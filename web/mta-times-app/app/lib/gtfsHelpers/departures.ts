@@ -34,7 +34,6 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         realtimeTripUpdates = realtimeTripUpdates.concat(updates);
     }
 
-
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
     const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
