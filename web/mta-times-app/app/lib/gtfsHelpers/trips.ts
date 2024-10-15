@@ -41,6 +41,8 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         return [];
     }
 
+    console.log(`Begin trip mapping: ${staticTrips.length} static trips and ${liveTripIds.length} live trips.`)
+
     try {
         staticTrips.forEach(staticTrip => {
             liveTripIds.forEach(liveTripId => {
@@ -49,7 +51,16 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
                 // The last chars of the realtime after the ".." for example might not match what is in the GTFS.
                 // So chop off the last 3 and then match
                 // Also ensure the route and day matches too TODO.
-                const modifiedLiveTripId = liveTripId.split("..")[0];
+
+                const tripSplitValue = liveTripId.split("..");
+                let modifiedLiveTripId = liveTripId;
+                if (tripSplitValue.length > 0) {
+                    modifiedLiveTripId = liveTripId.split("..")[0];
+                } else {
+                    console.error(`unable to split live trip id: ${liveTripId}`);
+                }
+
+                //const modifiedLiveTripId = liveTripId.split("..")[0];
 
                 // if (staticTrip.trip_id.includes(modifiedLiveTripId)) {
                 //     routeIdMap.get(staticTrip.route_id)
@@ -79,6 +90,7 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         return filteredTrips;
     } catch (error) {
         console.error('Error (getTripsByTripIds) mapping static to live trip ids:', error);
-        return [];
+        throw error;
+        //return [];
     }
 };
