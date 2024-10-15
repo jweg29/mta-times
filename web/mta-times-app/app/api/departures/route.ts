@@ -21,7 +21,6 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-
         const upcomingDepartures = await fetchDeparturesForStop(stopId);
 
         return NextResponse.json(
@@ -31,7 +30,7 @@ export async function GET(request: NextRequest) {
             }
         );
     } catch (error) {
-        console.error('Error fetching GTFS stops:', error);
+        console.error('fetchDeparturesForStop error:', error);
         return NextResponse.json(
             { error: 'Failed to fetch GTFS stops' },
             {

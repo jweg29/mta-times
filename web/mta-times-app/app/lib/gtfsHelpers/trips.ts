@@ -22,6 +22,11 @@ export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
 export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[]): Promise<GTFSTrip[]> => {
     console.log(`getTripsByTripIds`);
 
+    if (liveTripIds.length == 0 || routeIds.length == 0) {
+        console.error('Error (getTripsByTripIds) invalid params liveTripIds or routeIds.');
+        return [];
+    }
+
     const staticTrips = await fetchAllTrips();
     const filteredTrips: GTFSTrip[] = [];
 
@@ -31,39 +36,49 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         routeIdMap.set(routeId, true);
     });
 
-    staticTrips.forEach(staticTrip => {
-        liveTripIds.forEach(liveTripId => {
-            // If the GTFS Trip ID includes the live feed trip ID
-            // 065300_G..S19X002 is an exampl live ID.
-            // The last chars of the realtime after the ".." for example might not match what is in the GTFS.
-            // So chop off the last 3 and then match
-            // Also ensure the route and day matches too TODO.
-            const modifiedLiveTripId = liveTripId.split("..")[0];
+    if (staticTrips.length == 0) {
+        console.error('Error (getTripsByTripIds) not staticTrips found.');
+        return [];
+    }
 
-            // if (staticTrip.trip_id.includes(modifiedLiveTripId)) {
-            //     routeIdMap.get(staticTrip.route_id)
-            //     if (routeIdMap[staticTrip.route_id]) {
-            //         //filteredTrips.push(staticTrip);
-            //     }
-            // }
-            /*const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
-            let dayTypeString = ""
-            if (dayOfWeek === 0) {
-                dayTypeString = "Sunday";
-            } else if (dayOfWeek === 6) {
-                dayTypeString = "Saturday";
-            } else {
-                dayTypeString = "Weekday";
-            }*/
+    try {
+        staticTrips.forEach(staticTrip => {
+            liveTripIds.forEach(liveTripId => {
+                // If the GTFS Trip ID includes the live feed trip ID
+                // 065300_G..S19X002 is an exampl live ID.
+                // The last chars of the realtime after the ".." for example might not match what is in the GTFS.
+                // So chop off the last 3 and then match
+                // Also ensure the route and day matches too TODO.
+                const modifiedLiveTripId = liveTripId.split("..")[0];
 
-            if (staticTrip.trip_id.includes(modifiedLiveTripId) &&
-                routeIdMap.get(staticTrip.route_id) /*&&
-                staticTrip.service_id.includes(dayTypeString)*/) {
-                filteredTrips.push(staticTrip);
-            }
-        })
-    });
+                // if (staticTrip.trip_id.includes(modifiedLiveTripId)) {
+                //     routeIdMap.get(staticTrip.route_id)
+                //     if (routeIdMap[staticTrip.route_id]) {
+                //         //filteredTrips.push(staticTrip);
+                //     }
+                // }
+                /*const today = new Date();
+                const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+                let dayTypeString = ""
+                if (dayOfWeek === 0) {
+                    dayTypeString = "Sunday";
+                } else if (dayOfWeek === 6) {
+                    dayTypeString = "Saturday";
+                } else {
+                    dayTypeString = "Weekday";
+                }*/
 
-    return filteredTrips;
+                if (staticTrip.trip_id.includes(modifiedLiveTripId) &&
+                    routeIdMap.get(staticTrip.route_id) /*&&
+                    staticTrip.service_id.includes(dayTypeString)*/) {
+                    filteredTrips.push(staticTrip);
+                }
+            })
+        });
+
+        return filteredTrips;
+    } catch (error) {
+        console.error('Error (getTripsByTripIds) mapping static to live trip ids:', error);
+        return [];
+    }
 };
