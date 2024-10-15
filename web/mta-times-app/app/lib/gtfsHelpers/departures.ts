@@ -6,6 +6,7 @@ import { getStopById } from "./stops";
 import { getTripsByTripIds } from "./trips";
 
 export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[]> => {
+    console.log(`fetchDeparturesForStop with id: ${stopId}`);
     /*
     To retrieve departues we need to:
     1. Fetch realtime updates from getRealtimeTripUpdates().
@@ -15,6 +16,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     */
 
     const stop = await getStopById(stopId);
+    console.log(`getStopById id: ${stopId}`);
 
     // A stop can have multiple realtime feeds (e.g. A C G)
     // 1. Get all realtime feed urls
@@ -24,12 +26,14 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     const feedURLs = new Set<string>();
     for (const route of stop.routes) {
         feedURLs.add(route.liveFeedURL);
+        console.log(`fetching realtimeTripUpdates for route: ${route.gtfsRouteId}`);
     }
 
     for (const feedURL of Array.from(feedURLs.values())) {
         const updates = await getRealtimeTripUpdates(feedURL);
         realtimeTripUpdates = realtimeTripUpdates.concat(updates);
     }
+
 
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
@@ -42,6 +46,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     for (const route of routes) {
         routeMap.set(route.gtfsRouteId, route)
     }
+
+    console.log(`route mapping complete`);
 
     for (const realtimeTrip of realtimeTripUpdates) {
         // live include stuff that doesn't match gtfs
@@ -74,6 +80,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             console.warn(`Could not find trip for: ${realtimeTrip.tripUpdate.trip.tripId}`);
         }
     }
+
+    console.log(`trip matching complete`);
 
     const departures: Departure[] = realtimeTripUpdates.flatMap(realtimeTrip => {
         // We need the trip and the stop time updates that are only relevant for our stopId.
@@ -115,6 +123,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
         return departure;
     })
+
+    console.log(`departure creation complete`);
 
     // Sort departures by ascending time (earliest first)
     departures.sort((a, b) => new Date(a.departure_time).getTime() - new Date(b.departure_time).getTime());
