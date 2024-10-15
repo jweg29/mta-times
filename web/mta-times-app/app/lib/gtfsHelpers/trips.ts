@@ -7,6 +7,7 @@ export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
     try {
         const tripsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'trips.txt');
         const gtfsTrips: GTFSTrip[] = parseCSV(tripsPath);
+        console.log(`${gtfsTrips.length} static trips fetched`);
         return gtfsTrips;
     } catch (error) {
         console.error('Error (fetchAllTrips) fetching GTFS trips:', error);
