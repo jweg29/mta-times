@@ -22,7 +22,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     // 1. Get all realtime feed urls
     // 2. Fetch updates for each url
     // 3. Merge all trip updates together
-    let realtimeTripUpdates: RealtimeTrip[] = [];// = []TripUpdate();
+    let realtimeTripUpdates: RealtimeTrip[] = [];
     const feedURLs = new Set<string>();
     for (const route of stop.routes) {
         feedURLs.add(route.liveFeedURL);
@@ -34,7 +34,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         realtimeTripUpdates = realtimeTripUpdates.concat(updates);
     }
 
-    console.log(`finisehd fetching realtimeTripUpdates`);
+    console.log(`finshed fetching realtimeTripUpdates`);
 
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
@@ -51,7 +51,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     console.log(`route mapping complete`);
 
     for (const realtimeTrip of realtimeTripUpdates) {
-        // live include stuff that doesn't match gtfs
+        // live trip id includes characters that don't match the gtfs trip id.
         const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
         const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip.trip_id.includes(modifiedLiveTripId));
 
@@ -141,7 +141,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     return upcomingDepartures;
 }
 
-function getDepartureDisplayString(departureDate: Date): string {//stopTimeUpdate: StopTimeUpdate): string {
+function getDepartureDisplayString(departureDate: Date): string {
     let timeDisplayString = "";
     const timeDifference = departureDate.getTime() - Date.now();
 
