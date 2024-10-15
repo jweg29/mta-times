@@ -1,7 +1,7 @@
-import { Prisma, Route, Stop } from '@prisma/client';
+import { GTFSTrip, Prisma, Route, Stop } from '@prisma/client';
 import prisma from 'lib/prisma';
 import path from 'path';
-import { GTFSStop, GTFSTrip, RouteData, StopData, StopTime } from '../definitions';
+import { GTFSStop, RouteData, StopData, StopTime } from '../definitions';
 import { parseCSV } from '../utils';
 import { loadRoutesFromStaticFiles } from './routes';
 import { fetchAllTrips } from './trips';

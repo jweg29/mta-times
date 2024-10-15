@@ -14,6 +14,58 @@ import { parseCSV } from "./utils";
  * Syncs data from the static gtfs files and populates the database.
  */
 export const syncGTFSData = async () => {
+    // Trips data: For now just manually upload CSV
+    /*await prisma.gTFSTrip.deleteMany({});
+
+    const gtfsTrips = await loadTripsFromStaticFiles()
+
+    for (const trip of gtfsTrips) {
+        const createdTrip = await prisma.gTFSTrip.create({
+            data: {
+                gtfsTripId: trip.trip_id,
+                routeId: trip.route_id,
+                serviceId: trip.service_id,
+                tripHeadsign: trip.trip_headsign,
+                directionId: trip.direction_id,
+                shapeId: trip.shape_id,
+            },
+        })
+        console.log(`Created trip with id: ${createdTrip.id}`)
+    }*/
+
+    /*try {
+        // Create a function to handle each object creation with logging
+        const createTrip = async (trip: GTFSTripData) => {
+            const createdTrip = await prisma.gTFSTrip.create({
+                data: {
+                    gtfsTripId: trip.trip_id,
+                    routeId: trip.route_id,
+                    serviceId: trip.service_id,
+                    tripHeadsign: trip.trip_headsign,
+                    directionId: trip.direction_id,
+                    shapeId: trip.shape_id,
+                },
+            })
+            console.log(`Created trip with id: ${createdTrip.id}`)
+            return createdTrip;
+        };
+
+        // Use Promise.all to parallelize object creation
+        const createdTrips = await Promise.all(gtfsTrips.map(createTrip));
+        console.log(`Finished creating trips ✅`)
+        return createdTrips;
+    } catch (error) {
+        console.error('Error creating trips:', error);
+    } finally {
+        await prisma.$disconnect();
+    }*/
+
+    //await prisma.$disconnect();
+    //return; // HERE SO WE DON'T ACCIDENTLY RE SYNC
+
+    // Stop times
+    // TODO
+
     // Stations data
     const stationsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stations.csv');
     const parsedStations = parseCSV(stationsPath);
@@ -257,8 +309,6 @@ export const syncGTFSData = async () => {
     console.log(`Finished creating stops ✅`)
 
     // Setup StopTimes
-
-    // Setup Trips
 
     // Close Prisma
     await prisma.$disconnect();

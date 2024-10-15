@@ -53,3 +53,20 @@ model StopEntrance {
     stop         Stop?   @relation(fields: [stopId], references: [id])
     stopId       Int?
 }
+
+model GTFSTrip {
+    trip_id       String @id
+    route_id      String
+    service_id    String
+    trip_headsign String
+    direction_id  String
+    shape_id      String
+
+    // id           Int    @id @default(autoincrement())
+    // gtfsTripId   String
+    // routeId      String
+    // serviceId    String
+    // tripHeadsign String
+    // directionId  String
+    // shapeId      String
+}

@@ -1,4 +1,4 @@
-import { Route } from "@prisma/client";
+import { GTFSTrip, Route } from "@prisma/client";
 
 export interface GTFSStop {
   stop_id: string;
@@ -33,7 +33,7 @@ export interface CSVStation {
 }
 
 // Must match the GTFS schema defined in trips.txt.
-export interface GTFSTrip {
+export interface GTFSTripData {
   route_id: string;
   trip_id: string;
   service_id: string;

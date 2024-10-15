@@ -49,6 +49,18 @@ CREATE TABLE "StopEntrance" (
 );
 
 -- CreateTable
+CREATE TABLE "GTFSTrip" (
+    "trip_id" TEXT NOT NULL,
+    "route_id" TEXT NOT NULL,
+    "service_id" TEXT NOT NULL,
+    "trip_headsign" TEXT NOT NULL,
+    "direction_id" TEXT NOT NULL,
+    "shape_id" TEXT NOT NULL,
+
+    CONSTRAINT "GTFSTrip_pkey" PRIMARY KEY ("trip_id")
+);
+
+-- CreateTable
 CREATE TABLE "_StopRoutes" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
