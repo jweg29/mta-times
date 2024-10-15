@@ -79,10 +79,14 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
                     dayTypeString = "Weekday";
                 }*/
 
-                if (staticTrip.trip_id.includes(modifiedLiveTripId) &&
-                    routeIdMap.get(staticTrip.route_id) /*&&
+                if (staticTrip.trip_id.length > 0 && staticTrip.trip_id != undefined) {
+                    if (staticTrip.trip_id.includes(modifiedLiveTripId) &&
+                        routeIdMap.get(staticTrip.route_id) /*&&
                     staticTrip.service_id.includes(dayTypeString)*/) {
-                    filteredTrips.push(staticTrip);
+                        filteredTrips.push(staticTrip);
+                    }
+                } else {
+                    console.error(`invalid static trip id: ${staticTrip.trip_id}`);
                 }
             }
         }
