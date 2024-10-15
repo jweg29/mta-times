@@ -3,9 +3,15 @@ import { GTFSTrip } from '../definitions';
 import { parseCSV } from '../utils';
 
 export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
-    const tripsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'trips.txt');
-    const gtfsTrips: GTFSTrip[] = parseCSV(tripsPath);
-    return gtfsTrips;
+    console.log(`fetchAllTrips`);
+    try {
+        const tripsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'trips.txt');
+        const gtfsTrips: GTFSTrip[] = parseCSV(tripsPath);
+        return gtfsTrips;
+    } catch (error) {
+        console.error('Error (fetchAllTrips) fetching GTFS trips:', error);
+        return [];
+    }
 };
 
 /**
@@ -14,6 +20,8 @@ export const fetchAllTrips = async (): Promise<GTFSTrip[]> => {
  * @returns an array of Trip objects.
  */
 export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[]): Promise<GTFSTrip[]> => {
+    console.log(`getTripsByTripIds`);
+
     const staticTrips = await fetchAllTrips();
     const filteredTrips: GTFSTrip[] = [];
 

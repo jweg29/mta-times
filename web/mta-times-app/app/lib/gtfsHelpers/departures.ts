@@ -34,13 +34,14 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         realtimeTripUpdates = realtimeTripUpdates.concat(updates);
     }
 
-    console.log(`finshed fetching realtimeTripUpdates`);
+    console.log(`finished fetching realtimeTripUpdates`);
 
     // fetch all the trips associated with these updates and form a dictionary.
     const tripMap: Map<string, Trip> = new Map();
     const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
     const routeIds = stop.routes.map(route => route.gtfsRouteId)
     const gtfsTrips = await getTripsByTripIds(realtimeTripIds, routeIds);
+    console.log(`mapped ${gtfsTrips.length} realtime trips to gtfs trips`);
 
     const routes = await fetchRoutes();
     const routeMap: Map<string, Route> = new Map();
