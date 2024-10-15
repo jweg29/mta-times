@@ -44,8 +44,8 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
     console.log(`Begin trip mapping: ${staticTrips.length} static trips and ${liveTripIds.length} live trips.`)
 
     try {
-        staticTrips.forEach(staticTrip => {
-            liveTripIds.forEach(liveTripId => {
+        for (const staticTrip of staticTrips) {
+            for (const liveTripId of liveTripIds) {
                 // If the GTFS Trip ID includes the live feed trip ID
                 // 065300_G..S19X002 is an exampl live ID.
                 // The last chars of the realtime after the ".." for example might not match what is in the GTFS.
@@ -84,8 +84,8 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
                     staticTrip.service_id.includes(dayTypeString)*/) {
                     filteredTrips.push(staticTrip);
                 }
-            })
-        });
+            }
+        }
 
         return filteredTrips;
     } catch (error) {
