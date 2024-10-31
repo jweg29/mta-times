@@ -30,7 +30,7 @@ export const loadTripsFromStaticFiles = async (): Promise<GTFSTripData[]> => {
 }
 
 /**
- * Retrieves trips from the static trips.txt filtered by the given tripIds.
+ * Retrieves trips from the database filtered by the given tripIds.
  * @param tripIds 
  * @returns an array of Trip objects.
  */
@@ -42,7 +42,6 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         return [];
     }
 
-    const staticTrips = await fetchAllTrips();
     const filteredTrips: GTFSTrip[] = [];
 
     // create a map from routeIds
@@ -51,12 +50,7 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         routeIdMap.set(routeId, true);
     });
 
-    if (staticTrips.length == 0) {
-        console.error('Error (getTripsByTripIds) no staticTrips found.');
-        return [];
-    }
-
-    console.log(`Begin trip mapping: ${staticTrips.length} static trips and ${liveTripIds.length} live trips.`)
+    console.log(`Begin trip mapping: ${liveTripIds.length} live trips.`)
 
     for (const liveTripId of liveTripIds) {
         // findMany where liveTripId matches

@@ -149,7 +149,6 @@ export const fetchAllStopTimes = async (): Promise<StopTime[]> => {
     return stopTimes;
 };
 
-
 /**
  * Retrieves departure times from the static stop_times.txt filtered by the given stopId.
  * @param stopId 
