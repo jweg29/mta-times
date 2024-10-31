@@ -53,6 +53,12 @@ export interface Trip {
   //gtfsTrip: GTFSTrip
 }
 
+export interface TripPath {
+  routeId: string;
+  pathId: string;
+  headsign: string;
+}
+
 export interface StopTime {
   trip_id: string;
   trip?: Trip;

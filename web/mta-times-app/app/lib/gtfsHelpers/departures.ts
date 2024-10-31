@@ -35,13 +35,8 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
     console.log(`finished fetching realtimeTripUpdates`);
 
-    // fetch all the trips associated with these updates and form a dictionary.
-    // why do we need to do this?
     const tripMap: Map<string, Trip> = new Map();
     const realtimeTripIds = realtimeTripUpdates.map(update => update.tripUpdate.trip.tripId);
-    const routeIds = stop.routes.map(route => route.gtfsRouteId)
-    //const gtfsTrips = await getTripsByTripIds(realtimeTripIds, routeIds);
-    //console.log(`mapped ${gtfsTrips.length} realtime trips to gtfs trips`);
 
     const routes = await fetchRoutes();
     const routeMap: Map<string, Route> = new Map();
@@ -68,9 +63,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         }
 
         const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
-        //const gtfsTrip = gtfsTrips.find(gtfsTrip => gtfsTrip?.trip_id.includes(modifiedLiveTripId));
 
-        //if (gtfsTrip != null) {
         const trip: Trip = {
             tripId: realtimeTrip.tripUpdate.trip.tripId,
             startDate: realtimeTrip.tripUpdate.trip.startDate,
@@ -78,25 +71,10 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             routeId: realtimeTrip.tripUpdate.trip.routeId,
             route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
             headsign: null,
-            directionId: directionId, //== 'N' ? 0 :,
-            //gtfsTrip: null,
+            directionId: directionId,
         };
-        /*
-        const lastIndex = realtimeTrip.tripUpdate.stopTimeUpdate.length - 1
-        let lastStopName;
-        if (trip.gtfsTrip?.direction_id === "0") {
-            lastStopName = (await getStopById(realtimeTrip.tripUpdate.stopTimeUpdate[lastIndex].stopId.slice(0, -1))).name
-        } else {
-            lastStopName = (await getStopById(realtimeTrip.tripUpdate.stopTimeUpdate[0].stopId.slice(0, -1))).name
-        }
-
-        trip.gtfsTrip?.trip_headsign = lastStopName
-        */
 
         tripMap.set(realtimeTrip.tripUpdate.trip.tripId, trip);
-        //} else {
-        //    console.warn(`Could not find trip for: ${realtimeTrip.tripUpdate.trip.tripId}`);
-        //}
     }
 
     console.log(`trip matching complete`);
@@ -136,7 +114,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             isRealtime: true,
             departureDisplay: timeDisplayString,
             departureDisplayShort: timeDisplayString,
-            directionId: trip.directionId,//trip.gtfsTrip?.direction_id,
+            directionId: trip.directionId,
         };
 
         return departure;
