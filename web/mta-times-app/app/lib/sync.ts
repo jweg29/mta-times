@@ -1,12 +1,12 @@
-import { StopEntrance } from '@prisma/client';
 import AdmZip from 'adm-zip';
-import fs from 'fs';
+import fs, { writeFileSync } from 'fs';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 import path from 'path';
-import { CSVStation, EntranceData } from './definitions';
+import { CSVStation, TripPath } from './definitions';
 import { loadRoutesFromStaticFiles } from './gtfsHelpers/routes';
 import { loadStopsFromStaticFiles } from './gtfsHelpers/stops';
+import { loadTripsFromStaticFiles } from './gtfsHelpers/trips';
 import prisma from './prisma';
 import { parseCSV } from "./utils";
 
@@ -66,6 +66,66 @@ export const syncGTFSData = async () => {
     // Stop times
     // TODO
 
+    // Pre-process Headsigns
+    /** 
+     * Given a trip id we want to obtain a headsign.
+     * Example Trip id: "ASP24GEN-1038-Sunday-00_000600_1..S03R"
+     * Split by the "." OR ".." then take the second segment: "S03R"
+     * Ignore first char since that represents the direction "N/S": "03R"
+     * Map this string to a headsign: { "03R": "South Ferry" }
+     */
+
+    // Contains both "parts" of: 097200_A..N55R
+
+    const gtfsTrips = await loadTripsFromStaticFiles()
+    const headsignMap = new Map<string, TripPath>();
+    const tripPathDict: { [key: string]: TripPath } = {};
+
+    for (const trip of gtfsTrips) {
+        let idSegments;
+        idSegments = trip.trip_id.split("..");
+        if (idSegments.length == 1) {
+            idSegments = trip.trip_id.split(".");
+        }
+
+        const pathId = idSegments[1]//.slice(1);
+
+        const tripPath: TripPath = {
+            routeId: trip.route_id,
+            pathId: pathId,
+            headsign: trip.trip_headsign,
+        };
+
+        const tripPathKey = trip.route_id + pathId;
+
+        if (headsignMap.get(tripPathKey) == null) {
+            headsignMap.set(tripPathKey, tripPath)
+            tripPathDict[tripPathKey] = tripPath;
+
+            console.log(`Mapped headsign key: ${tripPathKey} to: ${trip.trip_headsign}`)
+        } else if (headsignMap.get(tripPathKey).headsign != trip.trip_headsign) {
+            console.log(`WARNING: Duplicate headsign key: ${tripPathKey} value: ${trip.trip_headsign}, saved value = ${headsignMap.get(tripPathKey).headsign} `)
+        }
+    }
+
+    // Write the dictionary to disk
+
+    // Write to a file (e.g., 'output.json')
+    try {
+        // Convert to JSON format
+        //const jsonData = JSON.stringify(headsignMap, null, 2); // `null, 2` adds indentation for readability
+        console.log(headsignMap.values[0])
+        const jsonData = JSON.stringify(tripPathDict);
+        const headsignMapPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'headsignMap.json');
+        await writeFileSync(headsignMapPath, jsonData, 'utf8');
+        console.log(`Data has been written to ${headsignMapPath}`);
+    } catch (error) {
+        console.error("An error occurred while writing the file:", error);
+    }
+
+    // STOP
+    return;
+
     // Stations data
     const stationsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stations.csv');
     const parsedStations = parseCSV(stationsPath);
@@ -88,7 +148,7 @@ export const syncGTFSData = async () => {
     });
 
     // Entrance data
-    await prisma.stopEntrance.deleteMany({});
+    /*await prisma.stopEntrance.deleteMany({});
 
     const entrancePath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'entrances.csv');
     const parsedEntrances = parseCSV(entrancePath);
@@ -128,7 +188,7 @@ export const syncGTFSData = async () => {
         }
     }
 
-    console.log(`Finished creating stop entrances ✅`)
+    console.log(`Finished creating stop entrances ✅`)*/
 
     // Setup Stops
 

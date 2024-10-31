@@ -3,6 +3,7 @@ import { Departure, RealtimeTrip, Trip } from "lib/definitions";
 import { getRealtimeTripUpdates } from "lib/realtime";
 import { fetchRoutes } from "./routes";
 import { getStopById } from "./stops";
+import { loadHeadsignMapFromStaticFile } from "./trips";
 
 export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[]> => {
     console.log(`fetchDeparturesForStop with id: ${stopId}`);
@@ -45,10 +46,14 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
     }
 
     console.log(`route mapping complete`);
+
+    const headsignMap = await loadHeadsignMapFromStaticFile();
+
     for (const realtimeTrip of realtimeTripUpdates) {
         // Example live trip ID: 093050_C..N04R
         // OR 094150_FS.S01R
         // The char after the ".." represents the directions.
+
         let tripIdSegments
         tripIdSegments = realtimeTrip.tripUpdate.trip.tripId.split("..");
         if (tripIdSegments.length == 1) {
@@ -56,13 +61,17 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         }
 
         const directionId = tripIdSegments.length > 1 ? tripIdSegments[1][0] : null;
+        const tripPathId = tripIdSegments[1];
+
+        const tripPathKey = tripIdSegments[0][tripIdSegments[0].length - 1] + tripPathId
+        const tripPath = headsignMap[tripPathKey];
 
         if (directionId == null) {
             console.log(`ERROR: No direction found for ${realtimeTrip.tripUpdate.trip.tripId}`);
             continue;
         }
 
-        const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
+        //const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
 
         const trip: Trip = {
             tripId: realtimeTrip.tripUpdate.trip.tripId,
@@ -70,7 +79,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             scheduleRelationship: realtimeTrip.tripUpdate.trip.scheduleRelationship,
             routeId: realtimeTrip.tripUpdate.trip.routeId,
             route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
-            headsign: null,
+            headsign: tripPath?.headsign,
             directionId: directionId,
         };
 
