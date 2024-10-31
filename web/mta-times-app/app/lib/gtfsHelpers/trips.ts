@@ -50,8 +50,12 @@ export const getTripsByTripIds = async (liveTripIds: string[], routeIds: string[
         routeIdMap.set(routeId, true);
     });
 
+    // try filtering live trips by route?
+    //const filteredLiveTripIds = liveTripIds.filter(liveTripId => liveTripId.includes())
+
     console.log(`Begin trip mapping: ${liveTripIds.length} live trips.`)
 
+    // This seems to create a bottleneck because we can have >100 live trips returned by the feed.
     for (const liveTripId of liveTripIds) {
         // findMany where liveTripId matches
         let modifiedLiveTripId = liveTripId;

@@ -36,7 +36,7 @@ export default function DepartureTimeCard({ departure }: { departure: Departure 
 
                         {/* Right-aligned text */}
                         <div style={{ textAlign: 'left', }}>
-                            <Text fw={700}>{departure.trip.gtfsTrip.trip_headsign}</Text>
+                            <Text fw={700}>{departure.trip?.headsign}</Text>
                             <Text size="md">{departure.departureDisplay}</Text>
                         </div>
 

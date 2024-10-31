@@ -1,4 +1,4 @@
-import { GTFSTrip, Route } from "@prisma/client";
+import { Route } from "@prisma/client";
 
 export interface GTFSStop {
   stop_id: string;
@@ -48,7 +48,9 @@ export interface Trip {
   scheduleRelationship: string;
   routeId: string;
   route?: Route;
-  gtfsTrip: GTFSTrip
+  headsign?: string;
+  directionId: string;
+  //gtfsTrip: GTFSTrip
 }
 
 export interface StopTime {

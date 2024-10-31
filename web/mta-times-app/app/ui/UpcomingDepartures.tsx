@@ -55,8 +55,8 @@ const UpcomingDepartures: React.FC = () => {
         )
     }
 
-    const northBoundDepartures = departures.filter(departure => departure.directionId == "0")
-    const southBoundDepartures = departures.filter(departure => departure.directionId == "1")
+    const northBoundDepartures = departures.filter(departure => departure.directionId == "N")
+    const southBoundDepartures = departures.filter(departure => departure.directionId == "S")
 
     return (
         <>
