@@ -53,7 +53,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         // Example live trip ID: 093050_C..N04R
         // OR 094150_FS.S01R
         // The char after the ".." represents the directions.
-
+        // 126250_L..S
         let tripIdSegments
         tripIdSegments = realtimeTrip.tripUpdate.trip.tripId.split("..");
         if (tripIdSegments.length == 1) {
@@ -66,8 +66,12 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         const tripPathKey = tripIdSegments[0][tripIdSegments[0].length - 1] + tripPathId
         const tripPath = headsignMap[tripPathKey];
 
+        if (tripPath == null) {
+            console.error(`ERROR: No trip path found for ${tripPathKey}`);
+        }
+
         if (directionId == null) {
-            console.log(`ERROR: No direction found for ${realtimeTrip.tripUpdate.trip.tripId}`);
+            console.error(`ERROR: No direction found for ${realtimeTrip.tripUpdate.trip.tripId}`);
             continue;
         }
 

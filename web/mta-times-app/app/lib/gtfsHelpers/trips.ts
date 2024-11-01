@@ -1,4 +1,5 @@
 import { GTFSTrip } from '@prisma/client';
+import { readFileSync } from 'fs';
 import { GTFSTripData, TripPath } from 'lib/definitions';
 import prisma from 'lib/prisma';
 import path from 'path';
@@ -32,8 +33,10 @@ export const loadTripsFromStaticFiles = async (): Promise<GTFSTripData[]> => {
 export const loadHeadsignMapFromStaticFile = async (): Promise<{ [key: string]: TripPath }> => {
     console.log(`loadHeadsignMapFromStaticFile`);
     try {
+
         const tripPathsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'headsignMap.json');
-        const tripPathsDict: { [key: string]: TripPath } = JSON.parse(tripPathsPath);
+        const fileContent = readFileSync(tripPathsPath, 'utf8');
+        const tripPathsDict: { [key: string]: TripPath } = JSON.parse(fileContent);
         return tripPathsDict;
     } catch (error) {
         console.error('Error (loadTripsFromStaticFiles) fetching GTFS trips:', error);
