@@ -1,9 +1,10 @@
+import { StopEntrance } from '@prisma/client';
 import AdmZip from 'adm-zip';
 import fs, { writeFileSync } from 'fs';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 import path from 'path';
-import { CSVStation, TripPath } from './definitions';
+import { CSVStation, EntranceData, TripPath } from './definitions';
 import { loadRoutesFromStaticFiles } from './gtfsHelpers/routes';
 import { loadStopsFromStaticFiles } from './gtfsHelpers/stops';
 import { loadTripsFromStaticFiles } from './gtfsHelpers/trips';
