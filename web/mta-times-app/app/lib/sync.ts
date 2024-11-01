@@ -148,7 +148,7 @@ export const syncGTFSData = async () => {
     });
 
     // Entrance data
-    /*await prisma.stopEntrance.deleteMany({});
+    await prisma.stopEntrance.deleteMany({});
 
     const entrancePath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'entrances.csv');
     const parsedEntrances = parseCSV(entrancePath);
@@ -188,7 +188,7 @@ export const syncGTFSData = async () => {
         }
     }
 
-    console.log(`Finished creating stop entrances ✅`)*/
+    console.log(`Finished creating stop entrances ✅`)
 
     // Setup Stops
 
