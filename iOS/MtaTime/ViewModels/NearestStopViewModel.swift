@@ -11,9 +11,10 @@ import Foundation
 @MainActor
 final class NearestStopViewModel: ObservableObject {
 
-    @Published var nearestStops: [Stop]?
+    @Published private(set) var counter: Int = 0
+    @Published private(set) var nearestStops: [Stop]?
 
-    var userLocation: CLLocationCoordinate2D? {
+    @Published private(set) var userLocation: CLLocationCoordinate2D? {
         didSet {
             Task {
                 await fetchNearbyStops()
@@ -30,22 +31,45 @@ final class NearestStopViewModel: ObservableObject {
 
     func fetchNearbyStops() async {
         guard let userLocation else { return }
-        print("fetchNearbyStops")
+
+        let fetchedStops = try? await NetworkService.shared.fetchNearbyStops(coordinate: userLocation)
+        self.nearestStops = fetchedStops
+        print("nearestStops updated: \(self.nearestStops?.count) items")
+        //testFunc()
+
+        /*print("fetchNearbyStops")
         do {
             let fetchedStops = try await NetworkService.shared.fetchNearbyStops(coordinate: userLocation)
-            await MainActor.run {
-                nearestStops = fetchedStops
+            //await MainActor.run {
+            DispatchQueue.main.async {
+                self.nearestStops = fetchedStops
+                print("nearestStops updated: \(self.nearestStops?.count) items")
+                self.nearestStops = []
+                self.testFunc()
             }
+
+            //}
         } catch {
             print("Error fetching nearby stop: \(error)")
-        }
+        }*/
+
+    }
+
+    func testFunc() {
+        self.objectWillChange.send()  // Manually trigger the change notification
+        print("testFunc() called")
+        self.nearestStops = []
+        self.counter += 1
+        print("counter = \(counter)")
+        self.objectWillChange.send()  // Manually trigger the change notification
     }
 }
 
 extension NearestStopViewModel: @preconcurrency LocationManagerDeleate {
 
     func didUpdateLocations(_ locations: [CLLocation]) {
-        if /*userLocation == nil,*/ let newLocation = locations.last {
+        if /*userLocation == nil,*/
+        let newLocation = locations.last {
             userLocation = newLocation.coordinate
         }
     }

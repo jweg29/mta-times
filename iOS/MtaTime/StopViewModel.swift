@@ -32,11 +32,11 @@ final class StopViewModel: ObservableObject {
             return departures
         case .northBound:
             return departures.filter {
-                $0.directionId == "0"
+                $0.directionId == "N"
             }
         case .southBound:
             return departures.filter {
-                $0.directionId == "1"
+                $0.directionId == "S"
             }
         }
     }

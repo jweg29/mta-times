@@ -10,12 +10,12 @@ import Foundation
 import MapKit
 import SwiftUI
 import UIKit
+import Combine
 
 struct MapContentView: View {
-    @StateObject var nearestStopViewModel: NearestStopViewModel = NearestStopViewModel()
+    @StateObject private var nearestStopViewModel = NearestStopViewModel()
     @State private var mapPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var isSheetPresented: Bool = true
-
     @State private var selectedItem: MKMapItem? {
         didSet {
             selectedStop = nearestStopViewModel.nearestStops?.first(where: {
@@ -32,20 +32,13 @@ struct MapContentView: View {
         return allEntrances ?? []
     }
 
-    @State private var selectedStop:
-        Stop? /* {
-        if let selectedItem {
-            return nearestStopViewModel.nearestStops?.first(where: { $0.gtfsStopId.hashValue == selectedItem.hashValue })
-        }
-        return nil
-    }*/
+    @State private var selectedStop:Stop?
 
     private var mapMarkerWidth: Double {
         return Double(selectedStop?.routes.count ?? 0) * 1.5
     }
 
-    init( /*viewModel: NearestStopViewModel = NearestStopViewModel(), */region: MKCoordinateRegion? = nil) {
-        //nearestStopViewModel = viewModel
+    init(region: MKCoordinateRegion? = nil) {
         if let region {
             self.mapPosition = MapCameraPosition.region(region)
         }
@@ -60,19 +53,19 @@ struct MapContentView: View {
                 content: {
                     UserAnnotation()
 
-                    ForEach(nearestStopViewModel.nearestStops ?? []) { stop in
-                        Annotation(stop.name, coordinate: stop.coordinate) {
-                            StopAnnotationView(stop: stop, selectedStop: $selectedStop)
-                                .zIndex(100)
-                        }
-                    }
-
                     if let selectedStop {
                         ForEach(selectedStop.entrances ?? []) { entrance in
                             Annotation("", coordinate: entrance.coordinate) {
                                 EntranceAnnotationView(entrance: entrance)
                                     .zIndex(-1)
                             }
+                        }
+                    }
+
+                    ForEach(nearestStopViewModel.nearestStops ?? []) { stop in
+                        Annotation(stop.name, coordinate: stop.coordinate) {
+                            StopAnnotationView(stop: stop, selectedStop: $selectedStop)
+                                .zIndex(100)
                         }
                     }
 
@@ -101,8 +94,14 @@ struct MapContentView: View {
             MapPopOverView(selectedDetent: .fraction(0.33), selectedStop: selectedStop)
                 .presentationBackground(.thinMaterial)  // set the background of the sheet
         }
-        .onChange(of: nearestStopViewModel.nearestStops) { nearestStops in
-            selectedStop = nearestStops?.first
+        .onChange(of: nearestStopViewModel.nearestStops) { prevValue, nearestStops in
+            print("onChange for nearestStops: \(nearestStops?.count ?? 0) stops found")
+            //if prevValue?.count == 0 {
+                selectedStop = nearestStops?.first
+            //}
+        }
+        .onChange(of: nearestStopViewModel.counter) { prevValue, counter in
+            print("onChange for nearestStopViewModel counter: \(String(counter))")
         }
     }
 }

@@ -17,9 +17,11 @@ struct DepartureRow: View {
                 .padding(.trailing, 4)
 
             VStack(alignment: .leading) {
-                Text(departure.trip.gtfsTrip.tripHeadsign)
-                    .font(.body)
-                    .fontWeight(.semibold)
+                if let headsign = departure.trip.headsign {
+                    Text(headsign)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                }
 
                 Text(departure.departureDisplayShort)
                     .font(.body)
@@ -49,13 +51,8 @@ struct DepartureRow: View {
                             color: "#2850AD",
                             textColor: "",
                             liveFeedURL: "", shouldDisplay: true),
-                       gtfsTrip:
-                        GTFSTrip(routeId: "",
-                                 tripId: "",
-                                 serviceId: "",
-                                 tripHeadsign: "Ozone Park-Lefferts Blvd",
-                                 directionId: "",
-                                 shapeId: "")),
+                       headsign: nil,
+                       directionId: nil),
             departureTime: "",
             departureDisplay: "2 minutes",
             departureDisplayShort: "2 minutes",

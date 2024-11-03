@@ -12,7 +12,7 @@ struct StopView: View {
     @ObservedObject var viewModel: StopViewModel
 
     private var options: [String] {
-        ["All", stop.northDirectionLabel, stop.southDirectionLabel]
+        [/*"Both directions", */stop.northDirectionLabel, stop.southDirectionLabel]
     }
 
     private var departureFilter: StopViewModel.DepartureFilter {
@@ -82,7 +82,9 @@ struct StopView: View {
                     } header: {
                         Picker("Route direction", selection: $selectedOption) {
                             ForEach(0..<options.count) { index in
-                                Text(options[index]).tag(index)
+                                Text(options[index])
+                                    .tag(index)
+                                    .font(.headline)
                             }
                         }
                         .tint(.blue)
@@ -112,7 +114,7 @@ struct StopView: View {
             })
     }
 }
-/*
+
 #Preview {
     StopView(
         stop:
@@ -122,8 +124,8 @@ struct StopView: View {
                 name: "W 4 St-Wash Sq",
                 lat: "",
                 lon: "",
-                northDirectionLabel: "Uptown",
-                southDirectionLabel: "Downtown",
+                northDirectionLabel: "Uptown & Queens",
+                southDirectionLabel: "Downtown & Brooklyn",
                 ada: "",
                 adaNotes: "",
                 locationType: "",
@@ -141,7 +143,8 @@ struct StopView: View {
                         url: "",
                         color: "#2850AD",
                         textColor: "",
-                        liveFeedURL: ""),
+                        liveFeedURL: "",
+                        shouldDisplay: true),
                     Route(
                         id: 1,
                         gtfsRouteId: "A",
@@ -154,7 +157,8 @@ struct StopView: View {
                         url: "",
                         color: "#2850AD",
                         textColor: "",
-                        liveFeedURL: ""),
+                        liveFeedURL: "",
+                        shouldDisplay: true),
                     Route(
                         id: 2,
                         gtfsRouteId: "",
@@ -167,9 +171,10 @@ struct StopView: View {
                         url: "",
                         color: "#2850AD",
                         textColor: "",
-                        liveFeedURL: ""),
+                        liveFeedURL: "",
+                        shouldDisplay: true),
                 ]
             )
     )
 }
-*/
+

@@ -12,10 +12,12 @@ struct Trip: Codable {
     let startDate: String
     let routeId: String
     let route: Route
-    let gtfsTrip: GTFSTrip
+    let headsign: String?
+    let directionId: String?
+    //let gtfsTrip: GTFSTrip
 }
 
-struct GTFSTrip: Codable {
+/*struct GTFSTrip: Codable {
     let routeId: String
     let tripId: String
     let serviceId: String
@@ -31,23 +33,4 @@ struct GTFSTrip: Codable {
         case directionId = "direction_id"
         case shapeId = "shape_id"
     }
-
-    /*init(routeId: String, tripId: String, serviceId: String, tripHeadsign: String, directionId: String, shapeId: String) {
-     self.routeId = routeId
-     self.tripId = tripId
-     self.serviceId = serviceId
-     self.tripHeadsign = tripHeadsign
-     self.directionId = directionId
-     self.shapeId = shapeId
-     }
-
-     init(from decoder: any Decoder) throws {
-     let container = try decoder.container(keyedBy: CodingKeys.self)
-     self.routeId = try container.decode(String.self, forKey: .routeId)
-     self.tripId = try container.decode(String.self, forKey: .tripId)
-     self.serviceId = try container.decode(String.self, forKey: .serviceId)
-     self.tripHeadsign = try container.decode(String.self, forKey: .tripHeadsign)
-     self.directionId = try container.decode(String.self, forKey: .directionId)
-     self.shapeId = try container.decode(String.self, forKey: .shapeId)
-     }*/
-}
+}*/

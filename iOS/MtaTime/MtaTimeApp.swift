@@ -11,18 +11,6 @@ import SwiftUI
 
 @main
 struct MtaTimeApp: App {
-
-    //@StateObject private var locationManager = LocationManager.shared
-
-    //@StateObject var nearestStop: Stop?
-
-    @ObservedObject private var nearestStopViewModel = NearestStopViewModel()
-
-    init() {
-        //LocationManager.shared.requestLocationAccess()
-        //LocationManager.shared.startLocationUpdates()
-    }
-
     var body: some Scene {
         WindowGroup {
             MapContentView()
