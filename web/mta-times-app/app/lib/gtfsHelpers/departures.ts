@@ -83,11 +83,21 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
         // TODO: Fix headsign bugs
         // What is the last stop in these
-        const stopTimeUpdates = realtimeTrip.tripUpdate.stopTimeUpdate;
-        const lastStopTimeUpdate = stopTimeUpdates[stopTimeUpdates.length - 1];
-        // Ignore last char since that represents the direction
-        const lastStopId = lastStopTimeUpdate.stopId.slice(0, -1);
-        const lastStop = stopIdMap.get(lastStopId);
+        let lastStopName: string = "Unknown"
+        try {
+            const stopTimeUpdates = realtimeTrip.tripUpdate.stopTimeUpdate;
+            // Sometimes there are no stopTimeUpdates?
+            if (stopTimeUpdates.length > 0) {
+                const lastStopTimeUpdate = stopTimeUpdates[stopTimeUpdates.length - 1];
+                // Ignore last char since that represents the direction
+                const lastStopId = lastStopTimeUpdate.stopId.slice(0, -1);
+                lastStopName = stopIdMap.get(lastStopId).stop_name;
+            }
+        } catch {
+            console.error(`ERROR: failed to calcualate last stop for stopTimeUpdate: ${lastStopTimeUpdate}`);
+        } finally {
+
+        }
 
         const trip: Trip = {
             tripId: realtimeTrip.tripUpdate.trip.tripId,
@@ -95,7 +105,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             scheduleRelationship: realtimeTrip.tripUpdate.trip.scheduleRelationship,
             routeId: realtimeTrip.tripUpdate.trip.routeId,
             route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
-            headsign: lastStop.stop_name,//tripPath?.headsign,
+            headsign: lastStopName,//tripPath?.headsign,
             directionId: directionId,
         };
 
