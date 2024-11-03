@@ -17,9 +17,9 @@ final class StopViewModel: ObservableObject {
     }
 
     enum DepartureFilter: Int {
-        case all = 0
-        case northBound = 1
-        case southBound = 2
+        //case all = 0
+        case northBound = 0
+        case southBound = 1
     }
 
     @Published var stop: Stop
@@ -28,8 +28,8 @@ final class StopViewModel: ObservableObject {
 
     func filteredDepartures(filter: DepartureFilter) -> [Departure] {
         switch filter {
-        case .all:
-            return departures
+        /*case .all:
+            return departures*/
         case .northBound:
             return departures.filter {
                 $0.directionId == "N"

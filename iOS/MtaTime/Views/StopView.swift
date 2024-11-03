@@ -16,7 +16,7 @@ struct StopView: View {
     }
 
     private var departureFilter: StopViewModel.DepartureFilter {
-        StopViewModel.DepartureFilter(rawValue: selectedOption) ?? .all
+        StopViewModel.DepartureFilter(rawValue: selectedOption) ?? .northBound
     }
 
     @State private var routeDirection = ""
@@ -85,6 +85,7 @@ struct StopView: View {
                                 Text(options[index])
                                     .tag(index)
                                     .font(.headline)
+                                    //.fixedSize(horizontal: true, vertical: false)
                             }
                         }
                         .tint(.blue)
