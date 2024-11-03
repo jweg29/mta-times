@@ -23,7 +23,7 @@ export const fetchStops = async (): Promise<Prisma.StopGetPayload<{ include: { e
  * 
  * @param lat
  * @param lon 
- * @returns The 10 closest stops from the given lat lon.
+ * @returns The 20 closest stops from the given lat lon.
  */
 export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>[]> => {
     const stops = await fetchStops();
@@ -56,7 +56,7 @@ export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prism
             distance: haversineDistance(lat, lon, stop.lat, stop.lon),
         }))
         .sort((a, b) => a.distance - b.distance)
-        .slice(0, 10)
+        .slice(0, 20)
         .map((item) => item.stop as unknown as (Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>)); // Type assertion to ensure TypeScript understands this is a Stop object
 }
 
