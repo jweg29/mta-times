@@ -60,7 +60,7 @@ export const fetchStopByLatLon = async (lat: number, lon: number): Promise<Prism
         .map((item) => item.stop as unknown as (Prisma.StopGetPayload<{ include: { entrances: true, routes: true } }>)); // Type assertion to ensure TypeScript understands this is a Stop object
 }
 
-export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
+export const loadGTFSStopsFromStaticFiles = async (): Promise<GTFSStop[]> => {
     const stopsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stops.txt');
     const parsedStops: GTFSStop[] = parseCSV(stopsPath);
 
@@ -71,6 +71,11 @@ export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
         stop.location_type === '1'
     );
 
+    return gtfsStops;
+}
+
+export const loadStopsFromStaticFiles = async (): Promise<StopData[]> => {
+    const gtfsStops = await loadGTFSStopsFromStaticFiles()
     const trips = await fetchAllTrips();
     const tripMap: Map<string, GTFSTrip> = new Map();
     trips.forEach(trip => {

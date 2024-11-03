@@ -1,9 +1,8 @@
 import { Route } from "@prisma/client";
-import { Departure, RealtimeTrip, Trip } from "lib/definitions";
+import { Departure, GTFSStop, RealtimeTrip, Trip } from "lib/definitions";
 import { getRealtimeTripUpdates } from "lib/realtime";
 import { fetchRoutes } from "./routes";
-import { getStopById } from "./stops";
-import { loadHeadsignMapFromStaticFile } from "./trips";
+import { getStopById, loadGTFSStopsFromStaticFiles } from "./stops";
 
 export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[]> => {
     console.log(`fetchDeparturesForStop with id: ${stopId}`);
@@ -47,7 +46,14 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
 
     console.log(`route mapping complete`);
 
-    const headsignMap = await loadHeadsignMapFromStaticFile();
+    //const headsignMap = await loadHeadsignMapFromStaticFile();
+
+    const allStops = await loadGTFSStopsFromStaticFiles();
+    // map these stops by stopId
+    const stopIdMap = new Map<string, GTFSStop>();
+    for (const stop of allStops) {
+        stopIdMap.set(stop.stop_id, stop);
+    }
 
     for (const realtimeTrip of realtimeTripUpdates) {
         // Example live trip ID: 093050_C..N04R
@@ -61,21 +67,27 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
         }
 
         const directionId = tripIdSegments.length > 1 ? tripIdSegments[1][0] : null;
-        const tripPathId = tripIdSegments[1];
+        /*const tripPathId = tripIdSegments[1];
 
         const tripPathKey = tripIdSegments[0][tripIdSegments[0].length - 1] + tripPathId
         const tripPath = headsignMap[tripPathKey];
 
         if (tripPath == null) {
             console.error(`ERROR: No trip path found for ${tripPathKey}`);
-        }
+        }*/
 
         if (directionId == null) {
             console.error(`ERROR: No direction found for ${realtimeTrip.tripUpdate.trip.tripId}`);
             continue;
         }
 
-        //const modifiedLiveTripId = realtimeTrip.tripUpdate.trip.tripId.split("..")[0];
+        // TODO: Fix headsign bugs
+        // What is the last stop in these
+        const stopTimeUpdates = realtimeTrip.tripUpdate.stopTimeUpdate;
+        const lastStopTimeUpdate = stopTimeUpdates[stopTimeUpdates.length - 1];
+        // Ignore last char since that represents the direction
+        const lastStopId = lastStopTimeUpdate.stopId.slice(0, -1);
+        const lastStop = stopIdMap.get(lastStopId);
 
         const trip: Trip = {
             tripId: realtimeTrip.tripUpdate.trip.tripId,
@@ -83,7 +95,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
             scheduleRelationship: realtimeTrip.tripUpdate.trip.scheduleRelationship,
             routeId: realtimeTrip.tripUpdate.trip.routeId,
             route: routeMap.get(realtimeTrip.tripUpdate.trip.routeId),
-            headsign: tripPath?.headsign,
+            headsign: lastStop.stop_name,//tripPath?.headsign,
             directionId: directionId,
         };
 

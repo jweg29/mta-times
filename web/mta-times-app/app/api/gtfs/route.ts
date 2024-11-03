@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const liveFeedUpdates = await getRealtimeTripUpdates("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace");
+        //const liveFeedURL = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace";
+        const liveFeedURL = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l";
+
+        const liveFeedUpdates = await getRealtimeTripUpdates(liveFeedURL);
         return NextResponse.json(
             liveFeedUpdates,
             {

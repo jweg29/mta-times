@@ -4,7 +4,7 @@ import fs, { writeFileSync } from 'fs';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 import path from 'path';
-import { CSVStation, EntranceData, TripPath } from './definitions';
+import { CSVStation, TripPath } from './definitions';
 import { loadRoutesFromStaticFiles } from './gtfsHelpers/routes';
 import { loadStopsFromStaticFiles } from './gtfsHelpers/stops';
 import { loadTripsFromStaticFiles } from './gtfsHelpers/trips';
@@ -125,7 +125,7 @@ export const syncGTFSData = async () => {
     }
 
     // STOP
-    return;
+    //return;
 
     // Stations data
     const stationsPath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'stations.csv');
@@ -133,7 +133,7 @@ export const syncGTFSData = async () => {
 
     const stationsMap = new Map<string, CSVStation>();
     const stations: CSVStation[] = parsedStations.map((data) => {
-        const station: CSVStation = {
+        /*const station: CSVStation = {
             stopId: data["gtfs_stop_id"],
             northDirectionLabel: data["north_direction_label"],
             southDirectionLabel: data["south_direction_label"],
@@ -142,6 +142,16 @@ export const syncGTFSData = async () => {
             stopName: data["stop_name"],
             ada: data["ada"],
             adaNotes: data["ada_notes"]
+        };*/
+        const station: CSVStation = {
+            stopId: data["GTFS Stop ID"],
+            northDirectionLabel: data["North Direction Label"],
+            southDirectionLabel: data["South Direction Label"],
+            division: data["Division"],
+            line: data["Line"],
+            stopName: data["Stop Name"],
+            ada: data["ADA"],
+            adaNotes: data["ADA Direction Notes"]
         };
 
         stationsMap.set(station.stopId, station);
@@ -149,7 +159,8 @@ export const syncGTFSData = async () => {
     });
 
     // Entrance data
-    await prisma.stopEntrance.deleteMany({});
+    let createdEntrances: StopEntrance[] = []
+    /*await prisma.stopEntrance.deleteMany({});
 
     const entrancePath = path.join(process.cwd(), 'app', 'lib', 'staticGTFS', 'entrances.csv');
     const parsedEntrances = parseCSV(entrancePath);
@@ -168,7 +179,7 @@ export const syncGTFSData = async () => {
         return entranceData;
     });
 
-    let createdEntrances: StopEntrance[] = []
+    
     for (const entranceData of entrances) {
         const createdEntrance = await prisma.stopEntrance.create({
             data: {
@@ -189,7 +200,7 @@ export const syncGTFSData = async () => {
         }
     }
 
-    console.log(`Finished creating stop entrances ✅`)
+    console.log(`Finished creating stop entrances ✅`)*/
 
     // Setup Stops
 
