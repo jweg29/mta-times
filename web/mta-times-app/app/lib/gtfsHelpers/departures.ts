@@ -94,7 +94,7 @@ export const fetchDeparturesForStop = async (stopId: string): Promise<Departure[
                 lastStopName = stopIdMap.get(lastStopId).stop_name;
             }
         } catch {
-            console.error(`ERROR: failed to calcualate last stop for stopTimeUpdate: ${lastStopTimeUpdate}`);
+            console.error(`ERROR: failed to calcualate last stop for realtimeTrip: ${realtimeTrip}`);
         } finally {
 
         }
