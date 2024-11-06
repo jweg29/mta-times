@@ -118,7 +118,7 @@ struct StopAnnotationView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.ultraThinMaterial)
-                    .frame(width: /*40*/ (Double(stop.routes.count) * 40), height: 40)
+                    .frame(width: /*40*/ (Double(stop.routes.count) * 26), height: 26)
                     .shadow(radius: 5)
 
                 VStack {
